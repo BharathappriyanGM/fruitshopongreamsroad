@@ -56,7 +56,7 @@ const products = [
     alt: "Caramel Custard Pudding"
   },
   {
-    img: "/menu/mango.jng",
+    img: "/menu/mango.png",
     name: "Fresh Mango Juice",
     tag: "Seasonal",
     desc: "Pure, thick Alphonso mango juice. No water, no sugar — just mango at peak ripeness.",
