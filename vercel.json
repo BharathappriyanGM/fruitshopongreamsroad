@@ -1,9 +1,8 @@
 {
-  "root": ".",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "framework": "vite",
-  "installCommand": "npm install --omit=dev",
+  "installCommand": "npm install",
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]
