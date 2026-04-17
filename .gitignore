@@ -24,8 +24,8 @@ Thumbs.db
 *.log
 npm-debug.log*
 
-# Backend (we use /api folder instead)
-backend/
+# Backend (uncomment if using separate backend folder)
+# backend/
 
 # Temporary files
 *.tmp
