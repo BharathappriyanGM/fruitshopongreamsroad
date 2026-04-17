@@ -130,36 +130,4 @@ async function getOrderDetails(req, res) {
   }
 }
 
-    const order = orderResult.rows[0];
-
-    const itemsResult = await pool.query(
-      `SELECT oi.menu_item_id, mi.name, mi.category, oi.quantity, oi.unit_price
-       FROM order_items oi
-       JOIN menu_items mi ON oi.menu_item_id = mi.id
-       WHERE oi.order_id = $1`,
-      [order_id]
-    );
-
-    res.json({
-      id: order.id,
-      outlet_id: order.outlet_id,
-      outlet_name: order.outlet_name,
-      user_id: order.user_id,
-      customer_name: order.customer_name,
-      customer_mobile: order.customer_mobile,
-      user_source: order.user_source,
-      slot_id: order.slot_id,
-      slot_time: order.slot_time,
-      pickup_date: order.pickup_date,
-      status: order.status,
-      subtotal: order.subtotal,
-      total: order.total,
-      items: itemsResult.rows
-    });
-  } catch (err) {
-    console.error('Get order details error:', err);
-    res.status(500).json({ error: 'Failed to fetch order details' });
-  }
-}
-
 module.exports = { updateOrderStatus, getOrderDetails, ORDER_STATUSES };
