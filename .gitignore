@@ -1,5 +1,10 @@
 # Dependencies
 node_modules/
+**/node_modules/
+
+# Database backups (never commit - contains sensitive data)
+backup.sql
+*.sql.backup
 
 # Environment variables
 .env

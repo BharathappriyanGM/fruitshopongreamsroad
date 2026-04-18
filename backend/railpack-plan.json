@@ -1,5 +1,0 @@
-{
-  "buildCommand": "npm start",
-  "outputDirectory": ".",
-  "installCommand": "npm ci"
-}
