@@ -2,7 +2,6 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { FiChevronDown } from "react-icons/fi";
-import { API_ENDPOINTS } from "../config/api";
 
 const STATES = ["Andhra Pradesh","Arunachal Pradesh","Assam","Bihar","Chhattisgarh","Goa","Gujarat","Haryana","Himachal Pradesh","Jharkhand","Karnataka","Kerala","Madhya Pradesh","Maharashtra","Manipur","Meghalaya","Mizoram","Nagaland","Odisha","Punjab","Rajasthan","Sikkim","Tamil Nadu","Telangana","Tripura","Uttar Pradesh","Uttarakhand","West Bengal","Andaman & Nicobar Islands","Chandigarh","Dadra & Nagar Haveli and Daman & Diu","Delhi","Jammu & Kashmir","Ladakh","Lakshadweep","Puducherry"];
 
@@ -21,7 +20,7 @@ export default function FranchiseEnquiry() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch(API_ENDPOINTS.franchiseEnquiry, {
+      const res = await fetch("http://localhost:3001/api/franchise/enquiry", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
@@ -37,15 +36,15 @@ export default function FranchiseEnquiry() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "#FFF8F0" }}>
+    <div className="franchise-bg-page">
       {/* Header */}
       <motion.nav
         initial={{ y: -80, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
         style={{
-          background: "rgba(75, 46, 43, 0.97)",
-          backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)",
-          borderBottom: "1px solid rgba(255,255,255,0.08)",
+          background: "rgba(30, 15, 10, 0.20)",
+          backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)",
+          borderBottom: "1px solid rgba(255,255,255,0.14)",
           padding: "0 48px", display: "flex", alignItems: "center",
           justifyContent: "space-between", height: 72, position: "sticky",
           top: 0, zIndex: 1000,
@@ -54,8 +53,8 @@ export default function FranchiseEnquiry() {
         <a href="/" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none" }}>
           <img src="/logo.png" alt="" style={{ width: 48, height: 48, borderRadius: "50%", objectFit: "cover", marginRight: 4 }} />
           <div>
-            <div style={{ color: "#fff", fontFamily: "'Fraunces', serif", fontSize: 16, fontWeight: 700, lineHeight: 1.2 }}>Fruit Shop</div>
-            <div style={{ color: "#E8C49A", fontSize: 11, fontWeight: 600 }}>On Greams Road</div>
+            <div style={{ color: "#137c41", fontFamily: "'Fraunces', serif", fontSize: 20, fontWeight: 800, lineHeight: 1.2 }}>Fruit Shop</div>
+            <div style={{ color: "#E91D24", fontSize: 10, fontWeight: 500, textTransform: "uppercase" }}>On Greams Road</div>
           </div>
         </a>
 
@@ -78,7 +77,7 @@ export default function FranchiseEnquiry() {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 8, scale: 0.96 }}
                   transition={{ duration: 0.18 }}
-                  style={{ position: "absolute", top: "calc(100% + 12px)", left: "50%", transform: "translateX(-50%)", background: "rgba(75,46,43,0.97)", backdropFilter: "blur(16px)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 16, padding: "8px", minWidth: 210, zIndex: 2000 }}>
+                  style={{ position: "absolute", top: "calc(100% + 12px)", left: "50%", transform: "translateX(-50%)", background: "rgba(255,255,255,0.12)", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)", border: "1px solid rgba(255,255,255,0.25)", borderRadius: 16, padding: "8px", minWidth: 210, zIndex: 2000 }}>
                   {[
                     { label: "🍹 Pick Me Up", path: "/pickup", sub: "Order fresh to your location" },
                     { label: "🏪 Stall Enquiry", path: "/stall", sub: "Book us for your event" },
@@ -98,7 +97,6 @@ export default function FranchiseEnquiry() {
 
           <li><a onClick={() => { navigate("/"); setTimeout(() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" }), 100); }} style={{ color: "rgba(255,255,255,0.75)", fontWeight: 500, fontSize: 14, textDecoration: "none", cursor: "pointer" }}>About</a></li>
           <li><a onClick={() => { navigate("/"); setTimeout(() => document.getElementById("locations")?.scrollIntoView({ behavior: "smooth" }), 100); }} style={{ color: "rgba(255,255,255,0.75)", fontWeight: 500, fontSize: 14, textDecoration: "none", cursor: "pointer" }}>Locations</a></li>
-          <li><a onClick={() => { navigate("/"); setTimeout(() => document.getElementById("reviews")?.scrollIntoView({ behavior: "smooth" }), 100); }} style={{ color: "rgba(255,255,255,0.75)", fontWeight: 500, fontSize: 14, textDecoration: "none", cursor: "pointer" }}>Reviews</a></li>
         </ul>
 
         <div role="button" tabIndex={0} aria-label="Menu" className="mobile-hamburger"
@@ -123,7 +121,6 @@ export default function FranchiseEnquiry() {
           { label: "🤝 Franchise", href: "/franchise", isRoute: true },
           { label: "About", href: "about", isRoute: true },
           { label: "Locations", href: "locations", isRoute: true },
-          { label: "Reviews", href: "reviews", isRoute: true },
         ].map(({ label, href, isRoute, isHeader }) =>
           isHeader
             ? <div key={label} style={{ fontSize: "11px", fontWeight: 700, color: "rgba(255,255,255,0.35)", textTransform: "uppercase", letterSpacing: "1.5px", padding: "14px 16px 4px" }}>{label}</div>
@@ -153,75 +150,77 @@ export default function FranchiseEnquiry() {
           <h2 style={{ fontSize: "clamp(32px,4vw,48px)", fontWeight: 900, color: "#4B2E2B", lineHeight: 1.15, marginBottom: 8 }}>
             Own a Slice of<br /><em style={{ color: "#C08552" }}>Tamil Nadu's Freshest</em>
           </h2>
-          <p style={{ fontSize: 16, color: "#6B4A3A", fontWeight: 300, lineHeight: 1.7, marginBottom: 32 }}>
+          <p style={{ fontSize: 16, color: "#2C1810", fontWeight: 300, lineHeight: 1.7, marginBottom: 32 }}>
             30 years of trust, 13 thriving locations, and a brand that Chennai swears by.
             Bring the freshness to your city.
           </p>
 
-          {submitted ? (
-            <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
-              style={{ textAlign: "center", padding: "48px 32px", background: "rgba(192,133,82,0.08)", borderRadius: 20, border: "1.5px solid rgba(192,133,82,0.25)" }}>
-              <div style={{ fontSize: 52, marginBottom: 16 }}>🎉</div>
-              <div style={{ fontSize: 22, color: "#4B2E2B", fontWeight: 700, marginBottom: 8 }}>Your dream just took a step closer!</div>
-              <p style={{ color: "#6B4A3A", fontSize: 15, lineHeight: 1.6 }}>We've received your enquiry. Our team will squeeze some time to reach you shortly.</p>
-            </motion.div>
-          ) : (
-            <form onSubmit={handleSubmit}>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }}>
-                {[["Name *", "name", "text", "Your full name"], ["Email *", "email", "email", "your@email.com"]].map(([label, key, type, ph]) => (
-                  <div key={key}>
-                    <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: "#4B2E2B", marginBottom: 7 }}>{label}</label>
-                    <input required type={type} placeholder={ph} value={form[key]} onChange={set(key)}
-                      style={{ width: "100%", padding: "13px 16px", border: "1.5px solid rgba(192,133,82,0.3)", borderRadius: 12, fontSize: 14, outline: "none", background: "white" }} />
+          <div style={{ background: "rgba(255,255,255,0.5)", backdropFilter: "blur(22px)", WebkitBackdropFilter: "blur(22px)", border: "1px solid rgba(255,255,255,0.85)", borderRadius: 24, padding: 32, boxShadow: "0 8px 40px rgba(75,46,43,0.1)" }}>
+            {submitted ? (
+              <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
+                style={{ textAlign: "center", padding: "48px 32px", background: "rgba(255,255,255,0.45)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderRadius: 20, border: "1px solid rgba(255,255,255,0.6)" }}>
+                <div style={{ fontSize: 52, marginBottom: 16 }}>🎉</div>
+                <div style={{ fontSize: 22, color: "#4B2E2B", fontWeight: 700, marginBottom: 8 }}>Your dream just took a step closer!</div>
+                <p style={{ color: "#2C1810", fontSize: 15, lineHeight: 1.6 }}>We've received your enquiry. Our team will squeeze some time to reach you shortly.</p>
+              </motion.div>
+            ) : (
+              <form onSubmit={handleSubmit}>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }}>
+                  {[["Name *", "name", "text", "Your full name"], ["Email *", "email", "email", "your@email.com"]].map(([label, key, type, ph]) => (
+                    <div key={key}>
+                      <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: "#4B2E2B", marginBottom: 7 }}>{label}</label>
+                      <input required type={type} placeholder={ph} value={form[key]} onChange={set(key)}
+                        style={{ width: "100%", padding: "13px 16px", border: "1.5px solid rgba(192,133,82,0.3)", borderRadius: 12, fontSize: 14, outline: "none", background: "rgba(255,255,255,0.65)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)" }} />
+                    </div>
+                  ))}
+                </div>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }}>
+                  <div>
+                    <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: "#4B2E2B", marginBottom: 7 }}>Contact *</label>
+                    <input required placeholder="+91 XXXXXXXXXX" value={form.contact} onChange={set("contact")}
+                      style={{ width: "100%", padding: "13px 16px", border: "1.5px solid rgba(192,133,82,0.3)", borderRadius: 12, fontSize: 14, outline: "none",background: "rgba(255,255,255,0.65)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)" }} />
                   </div>
-                ))}
-              </div>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }}>
-                <div>
-                  <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: "#4B2E2B", marginBottom: 7 }}>Contact *</label>
-                  <input required placeholder="+91 XXXXXXXXXX" value={form.contact} onChange={set("contact")}
-                    style={{ width: "100%", padding: "13px 16px", border: "1.5px solid rgba(192,133,82,0.3)", borderRadius: 12, fontSize: 14, outline: "none", background: "white" }} />
+                  <div>
+                    <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: "#4B2E2B", marginBottom: 7 }}>State *</label>
+                    <select required value={form.state} onChange={set("state")}
+                      style={{ width: "100%", padding: "13px 16px", border: "1.5px solid rgba(192,133,82,0.3)", borderRadius: 12, fontSize: 14, outline: "none", background: "rgba(255,255,255,0.65)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", appearance: "none" }}>
+                      <option value="">Choose state</option>
+                      {STATES.map(s => <option key={s}>{s}</option>)}
+                    </select>
+                  </div>
                 </div>
-                <div>
-                  <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: "#4B2E2B", marginBottom: 7 }}>State *</label>
-                  <select required value={form.state} onChange={set("state")}
-                    style={{ width: "100%", padding: "13px 16px", border: "1.5px solid rgba(192,133,82,0.3)", borderRadius: 12, fontSize: 14, outline: "none", background: "white", appearance: "none" }}>
-                    <option value="">Choose state</option>
-                    {STATES.map(s => <option key={s}>{s}</option>)}
-                  </select>
+                <div style={{ marginBottom: 16 }}>
+                  <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: "#4B2E2B", marginBottom: 7 }}>Interested City / Location *</label>
+                  <input required placeholder="City or identified location" value={form.city} onChange={set("city")}
+                    style={{ width: "100%", padding: "13px 16px", border: "1.5px solid rgba(192,133,82,0.3)", borderRadius: 12, fontSize: 14, outline: "none", background: "rgba(255,255,255,0.65)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)" }} />
                 </div>
-              </div>
-              <div style={{ marginBottom: 16 }}>
-                <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: "#4B2E2B", marginBottom: 7 }}>Interested City / Location *</label>
-                <input required placeholder="City or identified location" value={form.city} onChange={set("city")}
-                  style={{ width: "100%", padding: "13px 16px", border: "1.5px solid rgba(192,133,82,0.3)", borderRadius: 12, fontSize: 14, outline: "none", background: "white" }} />
-              </div>
-              <div style={{ marginBottom: 20 }}>
-                <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: "#4B2E2B", marginBottom: 7 }}>Message</label>
-                <textarea placeholder="Tell us about yourself and why you'd be a great franchise partner..." value={form.message} onChange={set("message")}
-                  style={{ width: "100%", padding: "13px 16px", border: "1.5px solid rgba(192,133,82,0.3)", borderRadius: 12, fontSize: 14, outline: "none", background: "white", minHeight: 110, resize: "vertical" }} />
-              </div>
-              {error && (
-                <div style={{ background: "#fef2f2", border: "1px solid #fecaca", borderRadius: 10, padding: "10px 16px", marginBottom: 16, color: "#dc2626", fontSize: 13 }}>
-                  {error}
+                <div style={{ marginBottom: 20 }}>
+                  <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: "#4B2E2B", marginBottom: 7 }}>Message</label>
+                  <textarea placeholder="Tell us about yourself and why you'd be a great franchise partner..." value={form.message} onChange={set("message")}
+                    style={{ width: "100%", padding: "13px 16px", border: "1.5px solid rgba(192,133,82,0.3)", borderRadius: 12, fontSize: 14, outline: "none", background: "rgba(255,255,255,0.65)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", minHeight: 110, resize: "vertical" }} />
                 </div>
-              )}
-              <motion.button type="submit" disabled={loading} whileHover={{ y: -2, boxShadow: "0 12px 32px rgba(75,46,43,0.25)" }} whileTap={{ scale: 0.97 }}
-                style={{ width: "100%", background: loading ? "#8C5A3C" : "#4B2E2B", color: "#fff", border: "none", padding: "15px 40px", borderRadius: 100, fontSize: 15, fontWeight: 700, cursor: loading ? "not-allowed" : "pointer" }}>
-                {loading ? "Submitting..." : "Submit Franchise Enquiry →"}
-              </motion.button>
-            </form>
-          )}
+                {error && (
+                  <div style={{ background: "#fef2f2", border: "1px solid #fecaca", borderRadius: 10, padding: "10px 16px", marginBottom: 16, color: "#dc2626", fontSize: 13 }}>
+                    {error}
+                  </div>
+                )}
+                <motion.button type="submit" disabled={loading} whileHover={{ y: -2, boxShadow: "0 12px 32px rgba(75,46,43,0.25)" }} whileTap={{ scale: 0.97 }}
+                  style={{ width: "100%", background: loading ? "#8C5A3C" : "#4B2E2B", color: "#fff", border: "none", padding: "15px 40px", borderRadius: 100, fontSize: 15, fontWeight: 700, cursor: loading ? "not-allowed" : "pointer" }}>
+                  {loading ? "Submitting..." : "Submit Franchise Enquiry →"}
+                </motion.button>
+              </form>
+            )}
+          </div>
         </motion.div>
 
         {/* Brand side */}
         <motion.div initial={{ opacity: 0, x: 32 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.2 }}
-          style={{ background: "#4B2E2B", borderRadius: 32, padding: "48px 32px", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: 22, position: "sticky", top: 100 }}>
+          style={{ background: "rgba(255,255,255,0.15)", backdropFilter: "blur(28px)", WebkitBackdropFilter: "blur(28px)", border: "1px solid rgba(255,255,255,0.35)", boxShadow: "0 8px 40px rgba(0,0,0,0.15)", borderRadius: 32, padding: "48px 32px", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: 22, position: "sticky", top: 100 }}>
           <div style={{ width: 140, height: 140, borderRadius: "50%", background: "white", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 16px 48px rgba(0,0,0,0.25)", border: "5px solid rgba(232,196,154,0.35)" }}>
             <img src="/logo.png" alt="Logo" style={{ width: 110, height: 110, borderRadius: "50%", objectFit: "cover" }} />
           </div>
           <div style={{ fontSize: 26, fontWeight: 900, color: "white", lineHeight: 1.2 }}>Fruit Shop<br />on Greams Road</div>
-          <div style={{ fontSize: 12, color: "#E8C49A", fontWeight: 600, letterSpacing: "1.5px", textTransform: "uppercase" }}>Est. 1992 · Tamil Nadu</div>
+          <div style={{ fontSize: 12, color: "#fff", fontWeight: 600, letterSpacing: "1.5px", textTransform: "uppercase" }}>Est. 1992 · Tamil Nadu</div>
           <p style={{ fontSize: 14, color: "rgba(255,255,255,0.65)", lineHeight: 1.8, fontWeight: 300 }}>Pure, natural, full-bodied, nothing artificial. Other outlets use reconstituted juice and add preservatives. We never will.</p>
           <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 8 }}>
             {["100% Natural", "No Preservatives", "No Gas Added", "Fresh Daily", "30+ Yrs Trust"].map(b => (
