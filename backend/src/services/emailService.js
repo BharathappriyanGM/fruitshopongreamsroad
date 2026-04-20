@@ -12,14 +12,19 @@ const transporter = nodemailer.createTransport({
 
 // Fetch template from DB by key
 async function getTemplate(templateKey) {
-  const result = await pool.query(
-    'SELECT subject, body_html FROM email_templates WHERE template_key = $1 AND is_active = true',
-    [templateKey]
-  );
-  if (result.rows.length === 0) {
-    throw new Error(`Email template not found: ${templateKey}`);
+  try {
+    const result = await pool.query(
+      'SELECT subject, body_html FROM email_templates WHERE template_key = $1 AND is_active = true',
+      [templateKey]
+    );
+    if (result.rows.length === 0) {
+      throw new Error(`Email template not found: ${templateKey}`);
+    }
+    return result.rows[0];
+  } catch (err) {
+    console.error(`getTemplate error for ${templateKey}:`, err.message);
+    throw err;
   }
-  return result.rows[0];
 }
 
 // Replace {{variable}} placeholders with actual values
@@ -31,20 +36,28 @@ function replacePlaceholders(text, variables) {
 
 // Main send function — used by all controllers
 async function sendEmail({ to, templateKey, variables }) {
-  const template = await getTemplate(templateKey);
+  try {
+    console.log(`Sending email | to: ${to} | template: ${templateKey}`);
+    
+    const template = await getTemplate(templateKey);
+    console.log(`Template fetched: ${template.subject.substring(0, 50)}...`);
 
-  const subject = replacePlaceholders(template.subject, variables);
-  const html = replacePlaceholders(template.body_html, variables);
+    const subject = replacePlaceholders(template.subject, variables);
+    const html = replacePlaceholders(template.body_html, variables);
 
-  const info = await transporter.sendMail({
-    from: `"Fruit Shop on Greams Road" <${process.env.GMAIL_USER}>`,
-    to,
-    subject,
-    html,
-  });
+    const info = await transporter.sendMail({
+      from: `"Fruit Shop on Greams Road" <${process.env.GMAIL_USER}>`,
+      to,
+      subject,
+      html,
+    });
 
-  console.log(`Email sent to ${to} | template: ${templateKey} | messageId: ${info.messageId}`);
-  return info;
+    console.log(`Email sent successfully to ${to} | messageId: ${info.messageId}`);
+    return info;
+  } catch (err) {
+    console.error(`sendEmail failed for ${templateKey} to ${to}:`, err.message);
+    throw err;
+  }
 }
 
 module.exports = { sendEmail };

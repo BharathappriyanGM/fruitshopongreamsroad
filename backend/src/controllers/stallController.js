@@ -19,33 +19,39 @@ async function submitStallEnquiry(req, res) {
     const submittedAt = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
     const formattedDate = new Date(date).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
 
-    // Send emails async (don't wait)
-    sendEmail({
-      to: process.env.ADMIN_EMAIL,
-      templateKey: 'stall_admin_alert',
-      variables: {
-        name,
-        email,
-        contact,
-        event_type: eventType,
-        event_date: formattedDate,
-        expected_guests: guests,
-        venue,
-        message: message || 'No additional notes',
-        submitted_at: submittedAt,
-      },
-    }).catch(err => console.error('Failed to send admin email:', err));
+    console.log('>>> Triggering stall admin email to:', process.env.ADMIN_EMAIL);
+    console.log('>>> ADMIN_EMAIL env:', process.env.ADMIN_EMAIL);
 
-    sendEmail({
-      to: email,
-      templateKey: 'stall_enquirer_confirmation',
-      variables: {
-        name,
-        event_type: eventType,
-        event_date: formattedDate,
-        venue,
-      },
-    }).catch(err => console.error('Failed to send confirmation email:', err));
+    // Send emails with setImmediate to ensure it runs after response
+    setImmediate(() => {
+      console.log('>>> Sending admin email now...');
+      sendEmail({
+        to: process.env.ADMIN_EMAIL,
+        templateKey: 'stall_admin_alert',
+        variables: {
+          name,
+          email,
+          contact,
+          event_type: eventType,
+          event_date: formattedDate,
+          expected_guests: guests,
+          venue,
+          message: message || 'No additional notes',
+          submitted_at: submittedAt,
+        },
+      }).then(() => console.log('>>> Admin email sent!')).catch(err => console.error('STALL ADMIN EMAIL FAILED:', err));
+
+      sendEmail({
+        to: email,
+        templateKey: 'stall_enquirer_confirmation',
+        variables: {
+          name,
+          event_type: eventType,
+          event_date: formattedDate,
+          venue,
+        },
+      }).then(() => console.log('>>> Confirmation email sent!')).catch(err => console.error('STALL CONFIRMATION EMAIL FAILED:', err));
+    });
 
     res.status(201).json({ success: true, message: 'Stall enquiry submitted successfully' });
   } catch (err) {
