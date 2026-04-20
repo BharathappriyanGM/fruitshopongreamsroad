@@ -18,8 +18,8 @@ async function submitFranchiseEnquiry(req, res) {
 
     const submittedAt = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
 
-    // Notify admin
-    await sendEmail({
+    // Send emails async (don't wait)
+    sendEmail({
       to: process.env.ADMIN_EMAIL,
       templateKey: 'franchise_admin_alert',
       variables: {
@@ -31,14 +31,13 @@ async function submitFranchiseEnquiry(req, res) {
         message: message || 'No message provided',
         submitted_at: submittedAt,
       },
-    });
+    }).catch(err => console.error('Failed to send admin email:', err));
 
-    // Confirm to enquirer
-    await sendEmail({
+    sendEmail({
       to: email,
       templateKey: 'franchise_enquirer_confirmation',
       variables: { name, city, state },
-    });
+    }).catch(err => console.error('Failed to send confirmation email:', err));
 
     res.status(201).json({ success: true, message: 'Franchise enquiry submitted successfully' });
   } catch (err) {

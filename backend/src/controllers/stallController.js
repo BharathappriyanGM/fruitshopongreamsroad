@@ -19,8 +19,8 @@ async function submitStallEnquiry(req, res) {
     const submittedAt = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
     const formattedDate = new Date(date).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
 
-    // Notify admin
-    await sendEmail({
+    // Send emails async (don't wait)
+    sendEmail({
       to: process.env.ADMIN_EMAIL,
       templateKey: 'stall_admin_alert',
       variables: {
@@ -34,10 +34,9 @@ async function submitStallEnquiry(req, res) {
         message: message || 'No additional notes',
         submitted_at: submittedAt,
       },
-    });
+    }).catch(err => console.error('Failed to send admin email:', err));
 
-    // Confirm to enquirer
-    await sendEmail({
+    sendEmail({
       to: email,
       templateKey: 'stall_enquirer_confirmation',
       variables: {
@@ -46,7 +45,7 @@ async function submitStallEnquiry(req, res) {
         event_date: formattedDate,
         venue,
       },
-    });
+    }).catch(err => console.error('Failed to send confirmation email:', err));
 
     res.status(201).json({ success: true, message: 'Stall enquiry submitted successfully' });
   } catch (err) {
