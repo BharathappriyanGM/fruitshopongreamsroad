@@ -61,7 +61,7 @@ app.use('/api/order-status', orderStatusRoutes);
 // Health check
 app.get('/api/health', (req, res) => res.json({ status: 'ok', service: 'Fruit Shop Backend' }));
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
