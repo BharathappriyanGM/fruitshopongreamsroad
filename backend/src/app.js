@@ -12,7 +12,33 @@ const orderStatusRoutes = require('./routes/orderStatus');
 
 const app = express();
 
-app.use(cors());
+// CORS - restrict to production Vercel frontend
+const corsOptions = {
+  origin: function (origin, callback) {
+    const allowedOrigins = [
+      'https://fruitshoponongreamsroadshop.vercel.app',
+      'http://localhost:5173',
+      'http://localhost:5174'
+    ];
+    // Allow requests with no origin (mobile apps, curl, etc.)
+    // or if origin is in allowed list
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  credentials: true,
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
+
+// Handle preflight OPTIONS requests explicitly for all routes
+app.options('*', cors(corsOptions));
+
 app.use(express.json());
 
 // Routes
