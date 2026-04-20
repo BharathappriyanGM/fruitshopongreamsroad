@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from "react";
+import "leaflet/dist/leaflet.css";
 import { motion, useInView, animate, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { FaInstagram, FaLinkedinIn, FaLeaf } from "react-icons/fa";
+import { FaInstagram, FaLinkedinIn, FaLeaf, FaEnvelope } from "react-icons/fa";
 import { FiShoppingCart, FiChevronDown, FiMapPin, FiMinus, FiPlus, FiZap, FiUsers } from "react-icons/fi";
 import "../App.css";
 
@@ -85,22 +86,22 @@ const products = [
 ];
 
 const outlets = [
-  { num: "01", name: "Greams Road", city: "Chennai", address: "11, Greams Road, Thousand Lights, Chennai, Tamil Nadu – 600006", flag: "flagship", map: "https://www.google.com/maps/search/?api=1&query=Fruit+Shop+On+Greams+Road+Thousand+Lights+Chennai" },
-  { num: "02", name: "Besant Nagar", city: "Chennai", address: "21, 3rd Avenue, Besant Nagar, Chennai, Tamil Nadu – 600090", map: "https://www.google.com/maps/search/?api=1&query=Fruit+Shop+On+Greams+Road+Besant+Nagar+Chennai" },
-  { num: "03", name: "Kilpauk", city: "Chennai", address: "Harleys Road / Kilpauk area, Chennai, Tamil Nadu", map: "https://www.google.com/maps/search/?api=1&query=Fruit+Shop+On+Greams+Road+Kilpauk+Chennai" },
-  { num: "04", name: "Nungambakkam", city: "Chennai", address: "37, Nungambakkam High Rd, Ponnangipuram, Tirumurthy Nagar, Nungambakkam, Chennai, Tamil Nadu - 600034", map: "https://www.google.com/maps/search/?api=1&query=Fruit+Shop+On+Greams+Road+Anna+Nagar+East+Chennai3" },
-  { num: "05", name: "Cathedral Road", city: "Chennai", address: "Cathedral Road, Gopalapuram, Chennai, Tamil Nadu", map: "https://www.google.com/maps/search/?api=1&query=Fruit+Shop+On+Greams+Road+Cathedral+Road+Chennai" },
-  { num: "06", name: "Anna Nagar", city: "Chennai", address: "AH Block, 4th Avenue, Anna Nagar East, Chennai, Tamil Nadu – 600040", map: "https://www.google.com/maps/search/?api=1&query=Fruit+Shop+On+Greams+Road+Anna+Nagar+East+Chennai" },
-  { num: "07", name: "Phoenix Mall", city: "Chennai", address: "Palladium Mall, Indira Gandhi Nagar, Velachery, Chennai, Tamil Nadu - 600042", map: "https://www.google.com/maps/search/?api=1&query=Fruit+Shop+On+Greams+Road+Anna+Nagar+East+Chennai4" },
-  { num: "08", name: "Ashok Nagar", city: "Chennai", address: "Jain Antariksha Apartments area, Kodambakkam, Chennai, Tamil Nadu", map: "https://www.google.com/maps/search/?api=1&query=Fruit+Shop+On+Greams+Road+Kodambakkam+Chennai" },
-  { num: "09", name: "Egmore", city: "Chennai", address: "Opposite Commissioner Office, Pantheon Road, Egmore, Chennai, Tamil Nadu – 600008", map: "https://www.google.com/maps/search/?api=1&query=Fruit+Shop+On+Greams+Road+Egmore+Chennai" },
-  { num: "10", name: "Alwarpet", city: "Chennai", address: "77, CP Ramaswamy Rd, Sriram Colony, Abiramapuram, Chennai, Tamil Nadu - 600018", map: "https://www.google.com/maps/search/?api=1&query=Fruit+Shop+On+Greams+Road+Anna+Nagar+East+Chennai5" },
-  { num: "11", name: "Iyyappanthangal", city: "Chennai", address: "Poonamallee High Road, Iyyappanthangal, Chennai, Tamil Nadu", map: "https://www.google.com/maps/search/?api=1&query=Fruit+Shop+On+Greams+Road+Iyyappanthangal+Chennai" },
-  { num: "12", name: "Race Course", city: "Coimbatore", address: "127, Thirugnanasambandam Road, Race Course, Gopalapuram, Coimbatore, Tamil Nadu – 641018", flag: "coimbatore", map: "https://www.google.com/maps/search/?api=1&query=Fruit+Shop+On+Greams+Road+Race+Course+Coimbatore" },
-  { num: "13", name: "T. Nagar", city: "Chennai", address: "2, Rajan Street, T. Nagar, Chennai, Tamil Nadu – 600017", map: "https://www.google.com/maps/search/?api=1&query=Fruit+Shop+On+Greams+Road+T+Nagar+Chennai" },
-  { num: "14", name: "Santhome", city: "Chennai", address: "Pattinapakkam / Santhome area, Chennai, Tamil Nadu", map: "https://www.google.com/maps/search/?api=1&query=Fruit+Shop+On+Greams+Road+Santhome+Chennai" },
-  { num: "15", name: "OMR", city: "Chennai", address: "12, MGR Main Rd, Kandhanchavadi, Perungudi, Chennai, Tamil Nadu - 600096", map: "https://www.google.com/maps/search/?api=1&query=Fruit+Shop+On+Greams+Road+Perungudi+Chennai" },
-  { num: "16", name: "Puducherry", city: "Puducherry", address: "Mango Tree Food Court, Sri Aurobindo Street, Heritage Town, Puducherry – 605001", flag: "puducherry", map: "https://www.google.com/maps/search/?api=1&query=Fruit+Shop+On+Greams+Road+Puducherry" },
+  { num: "01", name: "Greams Road",      city: "Chennai",    lat: 13.0636, lng: 80.2477, address: "11, Greams Road, Thousand Lights, Chennai, Tamil Nadu – 600006",                                                              flag: "flagship",   map: "https://www.google.com/maps/search/?api=1&query=Fruit+Shop+On+Greams+Road+Thousand+Lights+Chennai" },
+  { num: "02", name: "Besant Nagar",      city: "Chennai",    lat: 13.0002, lng: 80.2699, address: "21, 3rd Avenue, Besant Nagar, Chennai, Tamil Nadu – 600090",                                                                                         map: "https://www.google.com/maps/search/?api=1&query=Fruit+Shop+On+Greams+Road+Besant+Nagar+Chennai" },
+  { num: "03", name: "Kilpauk",           city: "Chennai",    lat: 13.0798, lng: 80.2379, address: "Harleys Road / Kilpauk area, Chennai, Tamil Nadu",                                                                                                      map: "https://www.google.com/maps/search/?api=1&query=Fruit+Shop+On+Greams+Road+Kilpauk+Chennai" },
+  { num: "04", name: "Nungambakkam",      city: "Chennai",    lat: 13.0617, lng: 80.2337, address: "37, Nungambakkam High Rd, Ponnangipuram, Tirumurthy Nagar, Nungambakkam, Chennai, Tamil Nadu – 600034",                                              map: "https://www.google.com/maps/search/?api=1&query=Fruit+Shop+On+Greams+Road+Nungambakkam+Chennai" },
+  { num: "05", name: "Cathedral Road",    city: "Chennai",    lat: 13.0568, lng: 80.2568, address: "Cathedral Road, Gopalapuram, Chennai, Tamil Nadu",                                                                                                      map: "https://www.google.com/maps/search/?api=1&query=Fruit+Shop+On+Greams+Road+Cathedral+Road+Chennai" },
+  { num: "06", name: "Anna Nagar",        city: "Chennai",    lat: 13.0837, lng: 80.2098, address: "AH Block, 4th Avenue, Anna Nagar East, Chennai, Tamil Nadu – 600040",                                                                                  map: "https://www.google.com/maps/search/?api=1&query=Fruit+Shop+On+Greams+Road+Anna+Nagar+East+Chennai" },
+  { num: "07", name: "Phoenix Mall",      city: "Chennai",    lat: 12.9745, lng: 80.2211, address: "Palladium Mall, Indira Gandhi Nagar, Velachery, Chennai, Tamil Nadu – 600042",                                                                         map: "https://www.google.com/maps/search/?api=1&query=Fruit+Shop+On+Greams+Road+Phoenix+Mall+Velachery+Chennai" },
+  { num: "08", name: "Ashok Nagar",       city: "Chennai",    lat: 13.0411, lng: 80.2267, address: "Jain Antariksha Apartments area, Kodambakkam, Chennai, Tamil Nadu",                                                                                     map: "https://www.google.com/maps/search/?api=1&query=Fruit+Shop+On+Greams+Road+Kodambakkam+Chennai" },
+  { num: "09", name: "Egmore",            city: "Chennai",    lat: 13.0793, lng: 80.2694, address: "Opposite Commissioner Office, Pantheon Road, Egmore, Chennai, Tamil Nadu – 600008",                                                                    map: "https://www.google.com/maps/search/?api=1&query=Fruit+Shop+On+Greams+Road+Egmore+Chennai" },
+  { num: "10", name: "Alwarpet",          city: "Chennai",    lat: 13.0418, lng: 80.2607, address: "77, CP Ramaswamy Rd, Sriram Colony, Abiramapuram, Chennai, Tamil Nadu – 600018",                                                                       map: "https://www.google.com/maps/search/?api=1&query=Fruit+Shop+On+Greams+Road+Alwarpet+Chennai" },
+  { num: "11", name: "Iyyappanthangal",   city: "Chennai",    lat: 13.0497, lng: 80.1387, address: "Poonamallee High Road, Iyyappanthangal, Chennai, Tamil Nadu",                                                                                           map: "https://www.google.com/maps/search/?api=1&query=Fruit+Shop+On+Greams+Road+Iyyappanthangal+Chennai" },
+  { num: "12", name: "Race Course",       city: "Coimbatore", lat: 11.0049, lng: 76.9598, address: "127, Thirugnanasambandam Road, Race Course, Gopalapuram, Coimbatore, Tamil Nadu – 641018",                                                            flag: "coimbatore", map: "https://www.google.com/maps/search/?api=1&query=Fruit+Shop+On+Greams+Road+Race+Course+Coimbatore" },
+  { num: "13", name: "T. Nagar",          city: "Chennai",    lat: 13.0418, lng: 80.2341, address: "2, Rajan Street, T. Nagar, Chennai, Tamil Nadu – 600017",                                                                                              map: "https://www.google.com/maps/search/?api=1&query=Fruit+Shop+On+Greams+Road+T+Nagar+Chennai" },
+  { num: "14", name: "Santhome",          city: "Chennai",    lat: 13.0321, lng: 80.2788, address: "Pattinapakkam / Santhome area, Chennai, Tamil Nadu",                                                                                                    map: "https://www.google.com/maps/search/?api=1&query=Fruit+Shop+On+Greams+Road+Santhome+Chennai" },
+  { num: "15", name: "OMR",               city: "Chennai",    lat: 12.9538, lng: 80.2450, address: "12, MGR Main Rd, Kandhanchavadi, Perungudi, Chennai, Tamil Nadu – 600096",                                                                             map: "https://www.google.com/maps/search/?api=1&query=Fruit+Shop+On+Greams+Road+Perungudi+OMR+Chennai" },
+  { num: "16", name: "Puducherry",        city: "Puducherry", lat: 11.9340, lng: 79.8298, address: "Mango Tree Food Court, Sri Aurobindo Street, Heritage Town, Puducherry – 605001",                                                                      flag: "puducherry", map: "https://www.google.com/maps/search/?api=1&query=Fruit+Shop+On+Greams+Road+Puducherry" },
 ];
 
 const reviews = [
@@ -121,10 +122,178 @@ function FlagBadge({ flag }) {
 
 /* ── City color map — warm browns per city ────────────────────────────── */
 const cityColors = {
-  Chennai:    { color: "#4B2E2B", bg: "rgba(75,46,43,0.07)"  },
-  Coimbatore: { color: "#8C5A3C", bg: "rgba(140,90,60,0.08)" },
-  Puducherry: { color: "#C08552", bg: "rgba(192,133,82,0.10)" },
+  Chennai:    { color: "#4B2E2B", bg: "rgba(75,46,43,0.07)",  accent: "#4B2E2B" },
+  Coimbatore: { color: "#8C5A3C", bg: "rgba(140,90,60,0.08)", accent: "#8C5A3C" },
+  Puducherry: { color: "#C08552", bg: "rgba(192,133,82,0.10)",accent: "#C08552" },
 };
+
+/* ── Outlet Tile — name only, address zooms on hover ─────────────────── */
+function OutletTile({ o, onHover, onLeave, style = {} }) {
+  const [hovered, setHovered] = useState(false);
+  const cc = cityColors[o.city];
+  return (
+    <motion.a
+      href={o.map} target="_blank" rel="noopener noreferrer"
+      onMouseEnter={() => { setHovered(true); onHover(o); }}
+      onMouseLeave={() => { setHovered(false); onLeave(); }}
+      whileHover={{ y: -4, boxShadow: `0 14px 36px ${cc.color}22` }}
+      style={{
+        display: "flex", flexDirection: "column", textDecoration: "none",
+        background: hovered ? cc.bg : "rgba(255,255,255,0.65)",
+        backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)",
+        borderRadius: 12,
+        border: `1.5px solid ${hovered ? cc.color + "55" : cc.color + "22"}`,
+        overflow: "hidden", cursor: "pointer",
+        boxShadow: "0 3px 12px rgba(75,46,43,0.07)",
+        position: "relative", minHeight: 72,
+        transition: "background 0.3s, border-color 0.3s",
+        ...style,
+      }}
+    >
+      {/* Default content: city + name */}
+      <div style={{
+        padding: "14px 10px 12px", flex: 1,
+        display: "flex", flexDirection: "column",
+        alignItems: "center", justifyContent: "center",
+        gap: 5, textAlign: "center",
+      }}>
+        <span style={{
+          fontSize: 8, fontWeight: 700, textTransform: "uppercase",
+          letterSpacing: "1.2px", color: cc.color,
+          background: cc.bg, padding: "2px 8px", borderRadius: 100,
+        }}>{o.city}</span>
+        <div style={{
+          fontSize: 13, fontWeight: 800, color: "#2C1810",
+          lineHeight: 1.2, letterSpacing: "-0.2px",
+        }}>{o.name}</div>
+        {o.flag && <FlagBadge flag={o.flag} />}
+      </div>
+
+      {/* Hover overlay: address zooms up */}
+      <motion.div
+        initial={{ opacity: 0, y: 28, scale: 0.88 }}
+        animate={hovered ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 28, scale: 0.88 }}
+        transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+        style={{
+          position: "absolute", bottom: 0, left: 0, right: 0,
+          background: cc.color,
+          padding: "8px 10px 9px",
+          textAlign: "center",
+          pointerEvents: "none",
+        }}
+      >
+        <p style={{ fontSize: 9, color: "rgba(255,255,255,0.92)", lineHeight: 1.55, margin: "0 0 4px", fontWeight: 400 }}>
+          {o.address}
+        </p>
+        <div style={{ fontSize: 9, fontWeight: 700, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", gap: 3 }}>
+          <FiMapPin size={8} /> Get Directions
+        </div>
+      </motion.div>
+    </motion.a>
+  );
+}
+
+/* ── Map controller — pans to hovered outlet ─────────────────────────── */
+function MapController({ target }) {
+  const { useMap } = require("react-leaflet");
+  const map = useMap();
+  useEffect(() => {
+    if (!target) return;
+    map.flyTo([target.lat, target.lng], 14, { animate: true, duration: 1.8, easeLinearity: 0.2 });
+  }, [target, map]);
+  return null;
+}
+
+/* ── Interactive Outlets Map ──────────────────────────────────────────── */
+function OutletsMap({ hoveredOutlet }) {
+  const [MapContainer, setMapContainer] = useState(null);
+  const [TileLayer, setTileLayer]       = useState(null);
+  const [CircleMarker, setCircleMarker] = useState(null);
+  const [Tooltip, setTooltip]           = useState(null);
+  const [MCmp, setMCmp]                 = useState(null);
+  const [L, setL]                       = useState(null);
+
+  useEffect(() => {
+    Promise.all([
+      import("react-leaflet"),
+      import("leaflet"),
+    ]).then(([rl, leaflet]) => {
+      // Fix default marker icons
+      const Lmod = leaflet.default || leaflet;
+      delete Lmod.Icon.Default.prototype._getIconUrl;
+      Lmod.Icon.Default.mergeOptions({
+        iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
+        iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+        shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+      });
+      setMapContainer(() => rl.MapContainer);
+      setTileLayer(() => rl.TileLayer);
+      setCircleMarker(() => rl.CircleMarker);
+      setTooltip(() => rl.Tooltip);
+      setMCmp(() => rl.useMap ? function MC({ t }) {
+        const map = rl.useMap();
+        useEffect(() => {
+          if (!t) return;
+          map.flyTo([t.lat, t.lng], 14, { animate: true, duration: 1.8, easeLinearity: 0.2 });
+        }, [t, map]);
+        return null;
+      } : null);
+      setL(Lmod);
+    });
+  }, []);
+
+  if (!MapContainer) {
+    return (
+      <div style={{ width: "100%", height: "100%", background: "#f5ede0", borderRadius: 16, display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <span style={{ color: "#C08552", fontSize: 13, fontWeight: 600 }}>Loading map…</span>
+      </div>
+    );
+  }
+
+  return (
+    <MapContainer
+      center={[12.5, 80.0]}
+      zoom={7}
+      style={{ width: "100%", height: "100%", borderRadius: 16 }}
+      zoomControl={false}
+      scrollWheelZoom={false}
+      attributionControl={false}
+    >
+      <TileLayer
+        url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+      />
+      {MCmp && <MCmp t={hoveredOutlet} />}
+      {outlets.map(o => {
+        const cc = cityColors[o.city];
+        const isHovered = hoveredOutlet && hoveredOutlet.num === o.num;
+        return (
+          <CircleMarker
+            key={o.num}
+            center={[o.lat, o.lng]}
+            radius={isHovered ? 10 : 7}
+            pathOptions={{
+              color: isHovered ? "#fff" : cc.color,
+              fillColor: isHovered ? cc.color : cc.color,
+              fillOpacity: isHovered ? 1 : 0.7,
+              weight: isHovered ? 3 : 1.5,
+            }}
+            eventHandlers={{
+              click: () => window.open(o.map, "_blank"),
+            }}
+          >
+            <Tooltip direction="top" offset={[0, -10]} opacity={1}
+              permanent={isHovered}
+              className="outlet-map-tooltip"
+            >
+              <span style={{ fontSize: 11, fontWeight: 700, color: "#2C1810" }}>{o.name}</span>
+            </Tooltip>
+          </CircleMarker>
+        );
+      })}
+    </MapContainer>
+  );
+}
 
 /* ── Product Card ─────────────────────────────────────────────────────── */
 function ProductCard({ p, i, onAddToCart }) {
@@ -149,7 +318,7 @@ function ProductCard({ p, i, onAddToCart }) {
         filter: "drop-shadow(0 16px 48px rgba(75,46,43,0.13))",
       }}
     >
-      <div style={{ borderRadius: 28, overflow: "hidden", background: "#FFF8F0" }}>
+      <div style={{ borderRadius: 28, overflow: "hidden", background: "rgba(255,255,255,0.18)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", border: "1px solid rgba(255,255,255,0.35)" }}>
         {/* Gradient header */}
         <div style={{
           background: p.bg, height: 220, position: "relative",
@@ -171,12 +340,12 @@ function ProductCard({ p, i, onAddToCart }) {
         </div>
 
         {/* Card body */}
-        <div style={{ padding: "22px 20px 20px", background: "#FFF8F0" }}>
+        <div className="product-glass-body" style={{ padding: "22px 20px 20px" }}>
           <div style={{ width: 36, height: 4, borderRadius: 2, background: p.accent, marginBottom: 12 }} />
           <div style={{ fontSize: 19, fontWeight: 800, color: "#2C1810", marginBottom: 6, lineHeight: 1.2 }}>
             {p.name}
           </div>
-          <p style={{ fontSize: 13, color: "#9ca3af", lineHeight: 1.65, marginBottom: 20, fontWeight: 400, minHeight: 44 }}>
+          <p style={{ fontSize: 13, color: "#43322b", lineHeight: 1.65, marginBottom: 20, fontWeight: 400, minHeight: 44 }}>
             {p.desc}
           </p>
         </div>
@@ -337,6 +506,16 @@ export default function FruitShopLanding({ cart, setCart }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [activeCity, setActiveCity] = useState("all");
+  const [mapTarget, setMapTarget] = useState(null);
+  const hoverTimerRef = useRef(null);
+
+  const handleOutletHover = (outlet) => {
+    clearTimeout(hoverTimerRef.current);
+    hoverTimerRef.current = setTimeout(() => setMapTarget(outlet), 1200);
+  };
+  const handleOutletLeave = () => {
+    clearTimeout(hoverTimerRef.current);
+  };
 
   const totalCartItems = cart.reduce((sum, i) => sum + i.qty, 0);
 
@@ -357,13 +536,18 @@ export default function FruitShopLanding({ cart, setCart }) {
       <motion.nav className="nav"
         initial={{ y: -80, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        style={{ background: "#4B2E2B", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+        style={{ 
+          background: "rgba(30, 15, 10, 0.15)", /* Glass transparent background */
+          backdropFilter: "blur(6px)",         /* Blur effect */
+          WebkitBackdropFilter: "blur(6px)",   /* Safari support */
+          borderBottom: "1px solid rgba(255,255,255,0.12)" 
+        }}>
 
         <a href="#" className="nav-logo">
           <img src="/logo.png" alt="" style={{ height: 48, width: "auto", marginRight: 4 }} />
           <div>
-            <div className="nav-logo-text" style={{ color: "#fff", fontFamily: "'Fraunces', serif" }}>Fruit Shop</div>
-            <div className="nav-logo-sub" style={{ color: "#E8C49A" }}>ON GREAMS ROAD</div>
+            <div className="nav-logo-text" style={{ color: "#137c41", fontFamily: "'Fraunces', serif" }}>Fruit Shop</div>
+            <div className="nav-logo-sub" style={{ color: "#E91D24" }}>ON GREAMS ROAD</div>
           </div>
         </a>
 
@@ -390,7 +574,7 @@ export default function FruitShopLanding({ cart, setCart }) {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 8, scale: 0.96 }}
                   transition={{ duration: 0.18 }}
-                  style={{ position: "absolute", top: "calc(100% + 12px)", left: "50%", transform: "translateX(-50%)", background: "rgba(75,46,43,0.97)", backdropFilter: "blur(16px)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 16, padding: "8px", minWidth: 210, zIndex: 2000 }}>
+                  style={{ position: "absolute", top: "calc(100% + 12px)", left: "50%", transform: "translateX(-50%)", background: "rgba(30,10,8,0.35)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", border: "1px solid rgba(255,255,255,0.2)", borderRadius: 16, padding: "8px", minWidth: 210, zIndex: 2000, boxShadow: "0 8px 32px rgba(0,0,0,0.25)" }}>
                   {[
                     { label: "🍹 Pick Me Up", path: "/pickup", sub: "Order fresh to your location" },
                     { label: "🏪 Stall Enquiry", path: "/stall", sub: "Book us for your event" },
@@ -399,9 +583,8 @@ export default function FruitShopLanding({ cart, setCart }) {
                     <motion.div key={label} whileHover={{ background: "rgba(255,255,255,0.08)", x: 3 }}
                       onClick={() => { navigate(path); setServicesOpen(false); }}
                       style={{ padding: "10px 14px", borderRadius: 10, cursor: "pointer" }}>
-                      <div style={{ color: "#fff", fontWeight: 600, fontSize: 14 }}>{label}</div>
-                      <div style={{ color: "rgba(255,255,255,0.45)", fontSize: 11, marginTop: 2 }}>{sub}</div>
-                    </motion.div>
+                      <div style={{ color: "#ffffff", fontWeight: 800, fontSize: 14, letterSpacing: "0.2px" }}>{label}</div>
+                      <div style={{ color: "rgba(255,255,255,0.75)", fontSize: 11, marginTop: 2, fontWeight: 500 }}>{sub}</div>                    </motion.div>
                   ))}
                 </motion.div>
               )}
@@ -456,15 +639,15 @@ export default function FruitShopLanding({ cart, setCart }) {
 
       {/* ── HERO ── */}
       <section className="hero" style={{ position: "relative", overflow: "hidden" }}>
-        <video autoPlay muted loop playsInline style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0.65, zIndex: 0 }}>
+        <video autoPlay muted loop playsInline style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0.9, zIndex: 0 }}>
           <source src="/videos/hero-bg.mp4" type="video/mp4" />
         </video>
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(75,46,43,0.85) 0%, rgba(140,90,60,0.5) 60%, rgba(192,133,82,0.3) 100%)", zIndex: 1 }} />
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(75,46,43,0.35) 0%, rgba(140,90,60,0.15) 60%, rgba(0,0,0,0.1) 100%)", zIndex: 1 }} />
 
         <motion.div className="hero-content" style={{ position: "relative", zIndex: 2 }}
           initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7, delay: 0.3, ease: "easeOut" }}>
-          <motion.div className="hero-badge" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} style={{ gap: 10 }}>
+          <motion.div className="hero-badge" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} style={{ gap: 10, background: "rgba(0,0,0,0.45)", border: "1px solid rgba(232,196,154,0.7)", color: "#F5D9A8" }}>
             <motion.span style={{ display: "inline-block", width: 8, height: 8, borderRadius: "50%", background: "#E8C49A", flexShrink: 0 }}
               animate={{ scale: [1, 1.5, 1], opacity: [1, 0.35, 1], boxShadow: ["0 0 0px #E8C49A", "0 0 8px 2px #E8C49A", "0 0 0px #E8C49A"] }}
               transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }} />
@@ -521,7 +704,7 @@ export default function FruitShopLanding({ cart, setCart }) {
           <p className="section-subtitle">From classic juices to signature specials — every sip made from fruits sourced daily.</p>
         </FadeUp>
 
-        <div style={{ position: "sticky", top: 72, zIndex: 10, width: "100%", background: "#FFF8F0", paddingTop: 16, paddingBottom: 16 }}>
+        <div style={{ position: "sticky", top: 72, zIndex: 10, width: "100%", background: "transparent", paddingTop: 16, paddingBottom: 16 }}>
           <ProductWheel products={products} onAddToCart={handleAddToCart} />
         </div>
       </section>
@@ -576,7 +759,7 @@ export default function FruitShopLanding({ cart, setCart }) {
               initial={{ opacity: 0, y: 30, scale: 0.9 }} whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: true }} transition={{ delay: i * 0.1 + 0.2, type: "spring", stiffness: 180, damping: 18 }}
               whileHover={{ y: -6 }}
-              style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 20, padding: "28px 32px", minWidth: 155, flex: 1, position: "relative", overflow: "hidden" }}>
+              style={{ background: "rgba(255,255,255,0.08)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", border: "1px solid rgba(255,255,255,0.16)", borderRadius: 20, padding: "28px 32px", minWidth: 155, flex: 1, position: "relative", overflow: "hidden" }}>
               <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: "linear-gradient(90deg, #E8C49A, #C08552)", borderRadius: "20px 20px 0 0" }} />
               <div style={{ fontSize: 38, fontWeight: 900, color: "#E8C49A", lineHeight: 1, marginBottom: 6 }}>
                 {num === 1992 ? "1992" : <AnimatedCounter target={num} suffix={suffix} />}
@@ -664,32 +847,13 @@ export default function FruitShopLanding({ cart, setCart }) {
 
           {/* TOP ROW — 5 cards */}
           <div className="locations-top-row" style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 10, gridAutoRows: "1fr" }}>
-            {filteredOutlets.slice(0, 5).map((o, i) => {
-              const cc = cityColors[o.city];
-              return (
-                <motion.a key={o.num} href={o.map} target="_blank" rel="noopener noreferrer"
-                  initial={{ opacity: 0, y: -20 }} whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }} transition={{ delay: i * 0.06, type: "spring", stiffness: 180, damping: 20 }}
-                  whileHover={{ y: -4, boxShadow: "0 14px 36px rgba(75,46,43,0.13)" }}
-                  style={{
-                    display: "flex", flexDirection: "column", textDecoration: "none",
-                    background: "#fff", borderRadius: 12, border: `1.5px solid ${cc.color}22`,
-                    overflow: "hidden", cursor: "pointer", boxShadow: "0 3px 12px rgba(75,46,43,0.07)",
-                  }}>
-                  <div style={{ width: "100%", background: cc.bg, display: "flex", justifyContent: "center", alignItems: "center", padding: "6px 0 5px", borderBottom: `1.5px solid ${cc.color}15`, flexShrink: 0 }}>
-                    <img src="/logo.png" alt="Logo" style={{ width: 22, height: 22, borderRadius: "50%", objectFit: "cover", border: `2px solid ${cc.color}` }} />
-                  </div>
-                  <div style={{ padding: "7px 10px 8px", flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 3, textAlign: "center" }}>
-                    <span style={{ fontSize: 8, fontWeight: 700, textTransform: "uppercase", letterSpacing: "1.2px", color: cc.color, background: cc.bg, padding: "2px 7px", borderRadius: 100 }}>{o.city}</span>
-                    <div style={{ fontSize: 11, fontWeight: 800, color: "#2C1810", lineHeight: 1.2 }}>{o.name}</div>
-                    <p style={{ fontSize: 9, color: "#6b7280", lineHeight: 1.5, margin: "2px 0 0", fontWeight: 400 }}>{o.address}</p>
-                    <div style={{ marginTop: 3, fontSize: 9, fontWeight: 700, color: cc.color, display: "flex", alignItems: "center", gap: 3 }}>
-                      <FiMapPin size={8} /> Get Directions
-                    </div>
-                  </div>
-                </motion.a>
-              );
-            })}
+            {filteredOutlets.slice(0, 5).map((o, i) => (
+              <motion.div key={o.num}
+                initial={{ opacity: 0, y: -20 }} whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }} transition={{ delay: i * 0.06, type: "spring", stiffness: 180, damping: 20 }}>
+                <OutletTile o={o} onHover={handleOutletHover} onLeave={handleOutletLeave} style={{ height: "100%" }} />
+              </motion.div>
+            ))}
           </div>
 
           {/* MIDDLE ROW */}
@@ -697,102 +861,45 @@ export default function FruitShopLanding({ cart, setCart }) {
 
             {/* Left 3 */}
             <div style={{ display: "flex", flexDirection: "column", gap: 10, flex: "0 0 170px" }}>
-              {filteredOutlets.slice(5, 8).map((o, i) => {
-                const cc = cityColors[o.city];
-                return (
-                  <motion.a key={o.num} href={o.map} target="_blank" rel="noopener noreferrer"
-                    initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }} transition={{ delay: i * 0.06, type: "spring", stiffness: 180, damping: 20 }}
-                    whileHover={{ y: -4, boxShadow: "0 14px 36px rgba(75,46,43,0.13)" }}
-                    style={{
-                      display: "flex", flexDirection: "column", textDecoration: "none",
-                      background: "#fff", borderRadius: 12, border: `1.5px solid ${cc.color}22`,
-                      overflow: "hidden", cursor: "pointer", boxShadow: "0 3px 12px rgba(75,46,43,0.07)", flex: 1,
-                    }}>
-                    <div style={{ width: "100%", background: cc.bg, display: "flex", justifyContent: "center", alignItems: "center", padding: "6px 0 5px", borderBottom: `1.5px solid ${cc.color}15`, flexShrink: 0 }}>
-                      <img src="/logo.png" alt="Logo" style={{ width: 22, height: 22, borderRadius: "50%", objectFit: "cover", border: `2px solid ${cc.color}` }} />
-                    </div>
-                    <div style={{ padding: "7px 8px 8px", flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 3, textAlign: "center" }}>
-                      <span style={{ fontSize: 8, fontWeight: 700, textTransform: "uppercase", letterSpacing: "1.2px", color: cc.color, background: cc.bg, padding: "2px 7px", borderRadius: 100 }}>{o.city}</span>
-                      <div style={{ fontSize: 11, fontWeight: 800, color: "#2C1810", lineHeight: 1.2 }}>{o.name}</div>
-                      <p style={{ fontSize: 9, color: "#6b7280", lineHeight: 1.5, margin: "2px 0 0", fontWeight: 400 }}>{o.address}</p>
-                      <div style={{ marginTop: 3, fontSize: 9, fontWeight: 700, color: cc.color, display: "flex", alignItems: "center", gap: 3 }}>
-                        <FiMapPin size={8} /> Get Directions
-                      </div>
-                    </div>
-                  </motion.a>
-                );
-              })}
+              {filteredOutlets.slice(5, 8).map((o, i) => (
+                <motion.div key={o.num} style={{ flex: 1 }}
+                  initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }} transition={{ delay: i * 0.06, type: "spring", stiffness: 180, damping: 20 }}>
+                  <OutletTile o={o} onHover={handleOutletHover} onLeave={handleOutletLeave} style={{ height: "100%" }} />
+                </motion.div>
+              ))}
             </div>
 
-            {/* MAP */}
-            <motion.div className="locations-map-center" initial={{ opacity: 0, scale: 0.94 }} whileInView={{ opacity: 1, scale: 1 }}
+            {/* INTERACTIVE MAP */}
+            <motion.div className="locations-map-center"
+              initial={{ opacity: 0, scale: 0.94 }} whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }} transition={{ duration: 0.7, ease: "easeOut" }}
               style={{ flex: 1, borderRadius: 16, overflow: "hidden", boxShadow: "0 16px 48px rgba(75,46,43,0.13)", border: "2px solid rgba(75,46,43,0.13)" }}>
-              <img src="/map.png" alt="Outlet locations map"
-                style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "55% 15%", display: "block" }} />
+              <OutletsMap hoveredOutlet={mapTarget} />
             </motion.div>
 
             {/* Right 3 */}
             <div style={{ display: "flex", flexDirection: "column", gap: 10, flex: "0 0 170px" }}>
-              {filteredOutlets.slice(8, 11).map((o, i) => {
-                const cc = cityColors[o.city];
-                return (
-                  <motion.a key={o.num} href={o.map} target="_blank" rel="noopener noreferrer"
-                    initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }} transition={{ delay: i * 0.06, type: "spring", stiffness: 180, damping: 20 }}
-                    whileHover={{ y: -4, boxShadow: "0 14px 36px rgba(75,46,43,0.13)" }}
-                    style={{
-                      display: "flex", flexDirection: "column", textDecoration: "none",
-                      background: "#fff", borderRadius: 12, border: `1.5px solid ${cc.color}22`,
-                      overflow: "hidden", cursor: "pointer", boxShadow: "0 3px 12px rgba(75,46,43,0.07)", flex: 1,
-                    }}>
-                    <div style={{ width: "100%", background: cc.bg, display: "flex", justifyContent: "center", alignItems: "center", padding: "6px 0 5px", borderBottom: `1.5px solid ${cc.color}15`, flexShrink: 0 }}>
-                      <img src="/logo.png" alt="Logo" style={{ width: 22, height: 22, borderRadius: "50%", objectFit: "cover", border: `2px solid ${cc.color}` }} />
-                    </div>
-                    <div style={{ padding: "7px 10px 8px", flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 3, textAlign: "center" }}>
-                      <span style={{ fontSize: 8, fontWeight: 700, textTransform: "uppercase", letterSpacing: "1.2px", color: cc.color, background: cc.bg, padding: "2px 7px", borderRadius: 100 }}>{o.city}</span>
-                      <div style={{ fontSize: 11, fontWeight: 800, color: "#2C1810", lineHeight: 1.2 }}>{o.name}</div>
-                      <p style={{ fontSize: 9, color: "#6b7280", lineHeight: 1.5, margin: "2px 0 0", fontWeight: 400 }}>{o.address}</p>
-                      <div style={{ marginTop: 3, fontSize: 9, fontWeight: 700, color: cc.color, display: "flex", alignItems: "center", gap: 3 }}>
-                        <FiMapPin size={8} /> Get Directions
-                      </div>
-                    </div>
-                  </motion.a>
-                );
-              })}
+              {filteredOutlets.slice(8, 11).map((o, i) => (
+                <motion.div key={o.num} style={{ flex: 1 }}
+                  initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }} transition={{ delay: i * 0.06, type: "spring", stiffness: 180, damping: 20 }}>
+                  <OutletTile o={o} onHover={handleOutletHover} onLeave={handleOutletLeave} style={{ height: "100%" }} />
+                </motion.div>
+              ))}
             </div>
           </div>
 
           {/* BOTTOM ROW */}
           {filteredOutlets.length > 9 && (
             <div className="locations-bottom-row" style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 10, gridAutoRows: "1fr" }}>
-              {filteredOutlets.slice(11).map((o, i) => {
-                const cc = cityColors[o.city];
-                return (
-                  <motion.a key={o.num} href={o.map} target="_blank" rel="noopener noreferrer"
-                    initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }} transition={{ delay: i * 0.06, type: "spring", stiffness: 180, damping: 20 }}
-                    whileHover={{ y: -4, boxShadow: "0 14px 36px rgba(75,46,43,0.13)" }}
-                    style={{
-                      display: "flex", flexDirection: "column", textDecoration: "none",
-                      background: "#fff", borderRadius: 12, border: `1.5px solid ${cc.color}22`,
-                      overflow: "hidden", cursor: "pointer", boxShadow: "0 3px 12px rgba(75,46,43,0.07)",
-                    }}>
-                    <div style={{ width: "100%", background: cc.bg, display: "flex", justifyContent: "center", alignItems: "center", padding: "6px 0 5px", borderBottom: `1.5px solid ${cc.color}15`, flexShrink: 0 }}>
-                      <img src="/logo.png" alt="Logo" style={{ width: 22, height: 22, borderRadius: "50%", objectFit: "cover", border: `2px solid ${cc.color}` }} />
-                    </div>
-                    <div style={{ padding: "7px 12px 9px", flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 3, textAlign: "center" }}>
-                      <span style={{ fontSize: 8, fontWeight: 700, textTransform: "uppercase", letterSpacing: "1.2px", color: cc.color, background: cc.bg, padding: "2px 8px", borderRadius: 100 }}>{o.city}</span>
-                      <div style={{ fontSize: 11, fontWeight: 800, color: "#2C1810", lineHeight: 1.2 }}>{o.name}</div>
-                      <p style={{ fontSize: 9, color: "#6b7280", lineHeight: 1.55, margin: "2px 0 0", fontWeight: 400 }}>{o.address}</p>
-                      <div style={{ marginTop: 3, fontSize: 9, fontWeight: 700, color: cc.color, display: "flex", alignItems: "center", gap: 3 }}>
-                        <FiMapPin size={8} /> Get Directions
-                      </div>
-                    </div>
-                  </motion.a>
-                );
-              })}
+              {filteredOutlets.slice(11).map((o, i) => (
+                <motion.div key={o.num}
+                  initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }} transition={{ delay: i * 0.06, type: "spring", stiffness: 180, damping: 20 }}>
+                  <OutletTile o={o} onHover={handleOutletHover} onLeave={handleOutletLeave} style={{ height: "100%" }} />
+                </motion.div>
+              ))}
             </div>
           )}
         </div>
@@ -800,7 +907,7 @@ export default function FruitShopLanding({ cart, setCart }) {
 
       {/* ── FOOTER ── */}
       <footer>
-        <div className="footer-inner">
+        <div className="footer-inner" style={{ position: "relative", zIndex: 1 }}>
           <div className="footer-brand-name">Fruit Shop on Greams Road</div>
           <p className="footer-tagline">No artificial colors. No fake flavoring. No gas in our juices.<br />Serving Chennai with freshness since 1992.</p>
           <div style={{ display: "flex", flexDirection: "column", gap: 6, alignItems: "center" }}>
@@ -809,6 +916,7 @@ export default function FruitShopLanding({ cart, setCart }) {
           <div className="footer-social">
             <a className="footer-social-link" href="https://www.instagram.com/fruitshopongreamsroad.in" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><FaInstagram /></a>
             <a className="footer-social-link" href="https://www.linkedin.com/company/fruit-shop-on-greams-road" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><FaLinkedinIn /></a>
+            <a className="footer-social-link" href="mailto:fruitshopongreamsroadsocial@gmail.com" target="_blank" rel="noopener noreferrer" aria-label="Email"><FaEnvelope /></a>
           </div>
           <div className="footer-divider" />
           <span className="footer-copy">© {new Date().getFullYear()} Fruit Shop on Greams Road. All rights reserved.</span>

@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FiChevronDown } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { FiShoppingCart, FiMinus, FiPlus } from "react-icons/fi";
-import { API_ENDPOINTS } from "../config/api";
 
 const CATEGORY_ACCENTS = {
   "Fresh Fruit Juices": "#4B2E2B",
@@ -65,7 +64,6 @@ export default function PickMeUp() {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [pickupTime, setPickupTime] = useState("");
-  const [selectedSlotId, setSelectedSlotId] = useState("");
   const [servicesOpen, setServicesOpen] = useState(false);
   const [outletId, setOutletId] = useState("");
   const [quantities, setQuantities] = useState({});
@@ -77,43 +75,21 @@ export default function PickMeUp() {
   const [showToast, setShowToast] = useState(false);
   const [outlets, setOutlets] = useState([]);
   const [menu, setMenu] = useState([]);
-  const [menuLoading, setMenuLoading] = useState(false);
   const [orderError, setOrderError] = useState("");
-  const [pickupSlots, setPickupSlots] = useState([]);
 
   useEffect(() => {
-    fetch(API_ENDPOINTS.outlets)
+    fetch("http://localhost:3001/api/outlets")
       .then(r => r.json())
       .then(setOutlets)
       .catch(err => console.error("Failed to fetch outlets:", err));
   }, []);
 
   useEffect(() => {
-    if (!outletId) {
-      setMenu([]);
-      return;
-    }
-    setMenuLoading(true);
-    fetch(API_ENDPOINTS.menu(outletId))
+    fetch("http://localhost:3001/api/menu")
       .then(r => r.json())
-      .then(data => {
-        setMenu(data);
-        setQuantities({});
-      })
-      .catch(err => console.error("Failed to fetch menu:", err))
-      .finally(() => setMenuLoading(false));
-  }, [outletId]);
-
-  useEffect(() => {
-    if (!outletId) {
-      setPickupSlots([]);
-      return;
-    }
-    fetch(API_ENDPOINTS.pickupSlots(outletId))
-      .then(r => r.json())
-      .then(setPickupSlots)
-      .catch(err => console.error("Failed to fetch pickup slots:", err));
-  }, [outletId]);
+      .then(setMenu)
+      .catch(err => console.error("Failed to fetch menu:", err));
+  }, []);
 
   const setQty = (name, delta) => {
     setQuantities(prev => {
@@ -136,7 +112,7 @@ export default function PickMeUp() {
   ];
 
   const handlePlaceOrder = async () => {
-    if (!outletId || !customerName || !customerPhone || !selectedSlotId || cartItems.length === 0) return;
+    if (!outletId || !customerName || !customerPhone || !pickupTime || cartItems.length === 0) return;
     setPlacing(true);
     setOrderError("");
     try {
@@ -147,14 +123,14 @@ export default function PickMeUp() {
         unit_price: item.price,
       }));
 
-      const res = await fetch(API_ENDPOINTS.orders, {
+      const res = await fetch("http://localhost:3001/api/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           outlet_id: parseInt(outletId),
           customer_name: customerName,
           customer_mobile: customerPhone,
-          slot_id: selectedSlotId ? parseInt(selectedSlotId) : null,
+          pickup_time: pickupTime,
           items: itemsForApi,
           subtotal: total,
           total,
@@ -176,7 +152,11 @@ export default function PickMeUp() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "#FFF8F0" }}>
+    <div className="pickup-bg-page">
+      <video autoPlay muted loop playsInline className="pickup-bg-video">
+        <source src="/videos/pickup-bg.mp4" type="video/mp4" />
+      </video>
+      <div className="pickup-bg-overlay" />
       <Confetti active={showConfetti} />
       <Toast show={showToast} message={toastMessages[Math.floor(Math.random() * toastMessages.length)]} />
 
@@ -185,9 +165,9 @@ export default function PickMeUp() {
         initial={{ y: -80, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
         style={{
-          background: "rgba(75, 46, 43, 0.97)",
-          backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)",
-          borderBottom: "1px solid rgba(255,255,255,0.08)",
+          background: "rgba(30, 15, 10, 0.20)",
+          backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)",
+          borderBottom: "1px solid rgba(255,255,255,0.14)",
           padding: "0 48px", display: "flex", alignItems: "center",
           justifyContent: "space-between", height: 72, position: "sticky",
           top: 0, zIndex: 1000,
@@ -196,8 +176,8 @@ export default function PickMeUp() {
         <a href="/" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none" }}>
           <img src="/logo.png" alt="" style={{ width: 48, height: 48, borderRadius: "50%", objectFit: "cover", marginRight: 4 }} />
           <div>
-            <div style={{ color: "#fff", fontFamily: "'Fraunces', serif", fontSize: 16, fontWeight: 700, lineHeight: 1.2 }}>Fruit Shop</div>
-            <div style={{ color: "#E8C49A", fontSize: 11, fontWeight: 600 }}>On Greams Road</div>
+            <div style={{ color: "#137c41", fontFamily: "'Fraunces', serif", fontWeight: 800, fontSize: 20, lineHeight: 1.2 }}>Fruit Shop</div>
+            <div style={{ color: "#E91D24", fontSize: 10, fontWeight: 500, textTransform: "uppercase" }}>On Greams Road</div>
           </div>
         </a>
 
@@ -220,7 +200,7 @@ export default function PickMeUp() {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 8, scale: 0.96 }}
                   transition={{ duration: 0.18 }}
-                  style={{ position: "absolute", top: "calc(100% + 12px)", left: "50%", transform: "translateX(-50%)", background: "rgba(75,46,43,0.97)", backdropFilter: "blur(16px)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 16, padding: "8px", minWidth: 210, zIndex: 2000 }}>
+                  style={{ position: "absolute", top: "calc(100% + 12px)", left: "50%", transform: "translateX(-50%)",background: "rgba(255,255,255,0.12)", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)", border: "1px solid rgba(255,255,255,0.25)", borderRadius: 16, padding: "8px", minWidth: 210, zIndex: 2000 }}>
                   {[
                     { label: "🍹 Pick Me Up", path: "/pickup", sub: "Order fresh to your location" },
                     { label: "🏪 Stall Enquiry", path: "/stall", sub: "Book us for your event" },
@@ -240,7 +220,6 @@ export default function PickMeUp() {
 
           <li><a onClick={() => { navigate("/"); setTimeout(() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" }), 100); }} style={{ color: "rgba(255,255,255,0.75)", fontWeight: 500, fontSize: 14, textDecoration: "none", cursor: "pointer" }}>About</a></li>
           <li><a onClick={() => { navigate("/"); setTimeout(() => document.getElementById("locations")?.scrollIntoView({ behavior: "smooth" }), 100); }} style={{ color: "rgba(255,255,255,0.75)", fontWeight: 500, fontSize: 14, textDecoration: "none", cursor: "pointer" }}>Locations</a></li>
-          <li><a onClick={() => { navigate("/"); setTimeout(() => document.getElementById("reviews")?.scrollIntoView({ behavior: "smooth" }), 100); }} style={{ color: "rgba(255,255,255,0.75)", fontWeight: 500, fontSize: 14, textDecoration: "none", cursor: "pointer" }}>Reviews</a></li>
         </ul>
 
         <div role="button" tabIndex={0} aria-label="Menu" className="mobile-hamburger"
@@ -265,7 +244,6 @@ export default function PickMeUp() {
           { label: "🤝 Franchise", href: "/franchise", isRoute: true },
           { label: "About", href: "about", isRoute: true },
           { label: "Locations", href: "locations", isRoute: true },
-          { label: "Reviews", href: "reviews", isRoute: true },
         ].map(({ label, href, isRoute, isHeader }) =>
           isHeader
             ? <div key={label} style={{ fontSize: "11px", fontWeight: 700, color: "rgba(255,255,255,0.35)", textTransform: "uppercase", letterSpacing: "1.5px", padding: "14px 16px 4px" }}>{label}</div>
@@ -293,19 +271,17 @@ export default function PickMeUp() {
         <div>
           {/* "More Than Juice" banner */}
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
-            style={{ background: "#4B2E2B", borderRadius: 24, padding: "32px 36px", marginBottom: 32, position: "relative", overflow: "hidden" }}>
+            style={{ background: "rgba(255,255,255,0.12)", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)", border: "1px solid rgba(255,255,255,0.35)", borderRadius: 24, padding: "32px 36px", marginBottom: 32, position: "relative", overflow: "hidden", boxShadow: "0 8px 32px rgba(0,0,0,0.12)" }}>
             <motion.div style={{ position: "absolute", right: -40, top: -40, width: 200, height: 200, borderRadius: "50%", background: "rgba(232,196,154,0.08)" }}
               animate={{ scale: [1, 1.1, 1] }} transition={{ duration: 6, repeat: Infinity }} />
-            <h3 style={{ fontSize: 22, fontWeight: 800, color: "#E8C49A", marginBottom: 14 }}>More Than Juice</h3>
-            <p style={{ fontSize: 14, color: "rgba(255,255,255,0.75)", lineHeight: 1.8, fontWeight: 300, marginBottom: 12 }}>
-              We don't bottle or process nature; we serve it pure. We never use preservatives, artificial colors, or synthetic sweeteners. Instead, we use imagination to create <strong style={{ color: "#E8C49A" }}>120+ unique varieties</strong> of healthy, caffeine free "pick-me-ups" that far surpass standard coffee or soda.
-            </p>
-            <p style={{ fontSize: 14, color: "rgba(255,255,255,0.75)", lineHeight: 1.8, fontWeight: 300 }}>
-              Whether you need a morning energy boost, a midday recovery, or a refreshing evening treat — our juices provide the <em style={{ color: "#E8C49A" }}>"vim and verve"</em> to power your day.
-            </p>
+            <h3 style={{ fontSize: 22, fontWeight: 900, color: "#fff", marginBottom: 14, textShadow: "0 1px 8px rgba(0,0,0,0.4)" }}>More Than Juice</h3>
+              <p style={{ fontSize: 14, color: "#fff", fontWeight: 500, lineHeight: 1.8, marginBottom: 12,justifyContent:"center", textAlign:"justify" }}>
+                We don't bottle or process nature, we serve it pure. We never use preservatives, artificial colors, or synthetic sweeteners. Instead, we use imagination to create <strong style={{ color: "#FFD9A0" }}>120+ unique varieties</strong> of healthy, caffeine free "pick-me-ups" that far surpass standard coffee or soda.
+                <br /><br />Whether you need a morning energy boost, a midday recovery, or a refreshing evening treat — our juices provide the <em style={{ color: "#FFD9A0" }}>"vim and verve"</em> to power your day.
+              </p>
             <div style={{ display: "flex", gap: 10, marginTop: 20, flexWrap: "wrap" }}>
               {["🌿 No Preservatives", "🎨 No Artificial Colors", "☕ Caffeine Free", "120+ Varieties"].map(tag => (
-                <span key={tag} style={{ background: "rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.8)", padding: "5px 14px", borderRadius: 100, fontSize: 11, fontWeight: 600, border: "1px solid rgba(255,255,255,0.15)" }}>{tag}</span>
+                <span key={tag} style={{ background: "rgba(255,255,255,0.18)", color: "#fff", fontWeight: 700, padding: "5px 14px", borderRadius: 100, fontSize: 11, border: "1px solid rgba(255,255,255,0.15)" }}>{tag}</span>
               ))}
             </div>
           </motion.div>
@@ -356,24 +332,6 @@ export default function PickMeUp() {
                   <span>👆</span> Select an outlet to see the menu
                 </motion.div>
               </motion.div>
-            ) : menuLoading ? (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                style={{
-                  display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-                  minHeight: 200, textAlign: "center",
-                  background: "white", borderRadius: 24,
-                  padding: "48px 32px",
-                }}>
-                <motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                  style={{ fontSize: 32, marginBottom: 16 }}>
-                  🧃
-                </motion.div>
-                <div style={{ fontSize: 16, fontWeight: 600, color: "#4B2E2B" }}>Loading menu...</div>
-              </motion.div>
             ) : (
               <motion.div
                 key="menu"
@@ -392,17 +350,11 @@ export default function PickMeUp() {
                       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 12 }}>
                         {cat.items.map((item, ii) => {
                           const qty = quantities[item.name] || 0;
-                          const isUnavailable = item.is_available === false;
                           return (
                             <motion.div key={item.name}
                               initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: ii * 0.04 + ci * 0.1 }}
-                              style={{ background: "white", borderRadius: 16, padding: "12px", border: `1.5px solid ${qty > 0 ? accent : isUnavailable ? "#fecaca" : "rgba(192,133,82,0.15)"}`,
-                                boxShadow: qty > 0 ? `0 4px 20px ${accent}22` : "none", transition: "all 0.2s", position: "relative", textAlign: "center", opacity: isUnavailable ? 0.65 : 1 }}>
-                              {isUnavailable && (
-                                <div style={{ position: "absolute", top: 8, right: 8, background: "#fef2f2", color: "#dc2626", padding: "3px 8px", borderRadius: 100, fontSize: 9, fontWeight: 700, border: "1px solid #fecaca" }}>
-                                  Unavailable
-                                </div>
-                              )}
+                              style={{ background: qty > 0 ? `rgba(255,255,255,0.75)` : "rgba(255,255,255,0.5)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)", borderRadius: 16, padding: "12px", border: `1.5px solid ${qty > 0 ? accent : "rgba(192,133,82,0.15)"}`,
+                                boxShadow: qty > 0 ? `0 4px 20px ${accent}22` : "none", transition: "all 0.2s", position: "relative", textAlign: "center" }}>
                               <div style={{
                                 width: 70, height: 70, borderRadius: "50%", overflow: "hidden",
                                 margin: "0 auto 12px", background: "#F5EDE0",
@@ -417,20 +369,20 @@ export default function PickMeUp() {
                               <div style={{ fontSize: 14, fontWeight: 700, color: "#2C1810", marginBottom: 12, lineHeight: 1.3 }}>{item.name}</div>
                               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                                 <div style={{ display: "flex", alignItems: "center", gap: 8, background: "#F5EDE0", borderRadius: 100, padding: "5px 10px" }}>
-                                  <motion.button whileTap={{ scale: 0.8 }} onClick={() => !isUnavailable && setQty(item.name, -1)}
-                                    style={{ width: 26, height: 26, borderRadius: "50%", background: qty > 0 && !isUnavailable ? accent : "#e4e4e7", border: "none", cursor: isUnavailable ? "not-allowed" : "pointer", color: qty > 0 && !isUnavailable ? "#fff" : "#9ca3af", fontWeight: 800, fontSize: 16, display: "flex", alignItems: "center", justifyContent: "center", lineHeight: 1 }}>
+                                  <motion.button whileTap={{ scale: 0.8 }} onClick={() => setQty(item.name, -1)}
+                                    style={{ width: 26, height: 26, borderRadius: "50%", background: qty > 0 ? accent : "#e4e4e7", border: "none", cursor: "pointer", color: qty > 0 ? "#fff" : "#9ca3af", fontWeight: 800, fontSize: 16, display: "flex", alignItems: "center", justifyContent: "center", lineHeight: 1 }}>
                                     <FiMinus size={12} />
                                   </motion.button>
                                   <AnimatePresence mode="wait">
                                     <motion.span key={qty} initial={{ opacity: 0, scale: 0.6 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.6 }}
-                                      style={{ fontSize: 14, fontWeight: 800, color: isUnavailable ? "#9ca3af" : "#2C1810", minWidth: 18, textAlign: "center" }}>{qty}</motion.span>
+                                      style={{ fontSize: 14, fontWeight: 800, color: "#2C1810", minWidth: 18, textAlign: "center" }}>{qty}</motion.span>
                                   </AnimatePresence>
-                                  <motion.button whileTap={{ scale: 0.8 }} onClick={() => !isUnavailable && setQty(item.name, 1)}
-                                    style={{ width: 26, height: 26, borderRadius: "50%", background: isUnavailable ? "#e4e4e7" : accent, border: "none", cursor: isUnavailable ? "not-allowed" : "pointer", color: isUnavailable ? "#9ca3af" : "#fff", fontWeight: 800, fontSize: 16, display: "flex", alignItems: "center", justifyContent: "center", lineHeight: 1 }}>
+                                  <motion.button whileTap={{ scale: 0.8 }} onClick={() => setQty(item.name, 1)}
+                                    style={{ width: 26, height: 26, borderRadius: "50%", background: accent, border: "none", cursor: "pointer", color: "#fff", fontWeight: 800, fontSize: 16, display: "flex", alignItems: "center", justifyContent: "center", lineHeight: 1 }}>
                                     <FiPlus size={12} />
                                   </motion.button>
                                 </div>
-                                <div style={{ fontSize: 15, fontWeight: 800, color: isUnavailable ? "#9ca3af" : accent }}>₹{item.price}</div>
+                                <div style={{ fontSize: 15, fontWeight: 800, color: accent }}>₹{item.price}</div>
                               </div>
                             </motion.div>
                           );
@@ -447,10 +399,10 @@ export default function PickMeUp() {
         {/* Right — sticky bill */}
         <div style={{ position: "sticky", top: 24 }}>
           <motion.div initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.3 }}
-            style={{ background: "white", borderRadius: 24, border: "1px solid rgba(192,133,82,0.15)", overflow: "hidden", boxShadow: "0 8px 32px rgba(75,46,43,0.08)" }}>
+            style={{ background: "rgba(255,255,255,0.55)", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)", borderRadius: 24, border: "1px solid rgba(255,255,255,0.7)", overflow: "hidden", boxShadow: "0 8px 40px rgba(75,46,43,0.12)" }}>
 
             {/* Bill header */}
-            <div style={{ background: "#4B2E2B", padding: "18px 24px", display: "flex", alignItems: "center", gap: 10 }}>
+            <div style={{ background: "rgba(75,46,43,0.85)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", padding: "18px 24px", display: "flex", alignItems: "center", gap: 10 }}>
               <FiShoppingCart color="#E8C49A" size={16} />
               <div style={{ color: "#fff", fontWeight: 800, fontSize: 15 }}>Your Order</div>
               {totalQty > 0 && <span style={{ marginLeft: "auto", background: "#E8C49A", color: "#4B2E2B", borderRadius: 100, width: 22, height: 22, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 800 }}>{totalQty}</span>}
@@ -499,33 +451,37 @@ export default function PickMeUp() {
                   {/* Customer details */}
                   <div style={{ marginBottom: 12, display: "flex", flexDirection: "column", gap: 14 }}>
                     {[
-                      { label: "Your Name", value: customerName, setter: setCustomerName, type: "text" },
-                      { label: "Mobile Number", value: customerPhone, setter: setCustomerPhone, type: "tel" },
-                    ].map(({ label, value, setter, type }) => (
-                      <div key={label} style={{ position: "relative" }}>
-                        <label style={{ position: "absolute", top: -9, left: 12, background: "white", padding: "0 4px", fontSize: 11, fontWeight: 600, color: "#8C5A3C", letterSpacing: 0.5 }}>
+                      { label: "Your Name", value: customerName, setter: setCustomerName, type: "text", placeholder: "e.g. Arun Kumar" },
+                      { label: "Mobile Number", value: customerPhone, setter: setCustomerPhone, type: "tel", placeholder: "e.g. 9876543210" },
+                    ].map(({ label, value, setter, type, placeholder }) => (
+                      <div key={label} style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+                        <label style={{ fontSize: 11, fontWeight: 700, color: "#8C5A3C", letterSpacing: 0.5, textTransform: "uppercase" }}>
                           {label}
                         </label>
-                        <input type={type} value={value} onChange={e => setter(e.target.value)}
-                          style={{ width: "100%", padding: "11px 14px", border: "1.5px solid rgba(192,133,82,0.25)", borderRadius: 10, fontSize: 13, outline: "none", boxSizing: "border-box" }} />
+                        <input type={type} value={value} onChange={e => setter(e.target.value)} placeholder={placeholder}
+                          style={{ width: "100%", padding: "11px 14px", border: "1.5px solid rgba(192,133,82,0.35)", borderRadius: 10, fontSize: 13, outline: "none", boxSizing: "border-box", background: "rgba(255,255,255,0.75)" }} />
                       </div>
                     ))}
-                    <div style={{ position: "relative" }}>
-                      <label style={{ position: "absolute", top: -9, left: 12, background: "white", padding: "0 4px", fontSize: 11, fontWeight: 600, color: "#8C5A3C", letterSpacing: 0.5 }}>
+
+                    {/* Pickup Time — 20-min interval dropdown */}
+                    <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+                      <label style={{ fontSize: 11, fontWeight: 700, color: "#8C5A3C", letterSpacing: 0.5, textTransform: "uppercase" }}>
                         Pick Up Time
                       </label>
-                      <select value={selectedSlotId} onChange={e => { setSelectedSlotId(e.target.value); setPickupTime(e.target.options[e.target.selectedIndex].text); }}
-                        style={{ width: "100%", padding: "11px 14px", border: "1.5px solid rgba(192,133,82,0.25)", borderRadius: 10, fontSize: 13, outline: "none", color: selectedSlotId ? "#2C1810" : "#9ca3af", cursor: "pointer", boxSizing: "border-box", appearance: "none", background: "white" }}>
-                        <option value="">Select a time slot...</option>
-                        {pickupSlots.length === 0 ? (
-                          <option disabled>No slots available</option>
-                        ) : (
-                          pickupSlots.map(slot => (
-                            <option key={slot.id} value={slot.id} disabled={slot.is_full}>
-                              {slot.display_time}{slot.is_full ? ' (Full)' : ''}
-                            </option>
-                          ))
-                        )}
+                      <select value={pickupTime} onChange={e => setPickupTime(e.target.value)}
+                        style={{ width: "100%", padding: "11px 14px", border: "1.5px solid rgba(192,133,82,0.35)", borderRadius: 10, fontSize: 13, outline: "none", boxSizing: "border-box", background: "rgba(255,255,255,0.75)", color: pickupTime ? "#2C1810" : "#9ca3af", appearance: "none", cursor: "pointer" }}>
+                        <option value="">Select a pickup time...</option>
+                        {Array.from({ length: 13 * 3 }).map((_, i) => {
+                          const totalMins = 9 * 60 + i * 20;
+                          if (totalMins > 22 * 60) return null;
+                          const h = Math.floor(totalMins / 60);
+                          const m = totalMins % 60;
+                          const h12 = h > 12 ? h - 12 : h === 0 ? 12 : h;
+                          const ampm = h >= 12 ? "PM" : "AM";
+                          const label = `${h12}:${m.toString().padStart(2, "0")} ${ampm}`;
+                          const value = `${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}`;
+                          return <option key={value} value={value}>{label}</option>;
+                        })}
                       </select>
                     </div>
                   </div>
@@ -538,7 +494,7 @@ export default function PickMeUp() {
 
                   <motion.button
                     onClick={handlePlaceOrder}
-                    disabled={!outletId || !customerName || !customerPhone || !selectedSlotId || cartItems.length === 0 || placing}
+                    disabled={!outletId || !customerName || !customerPhone || !pickupTime || cartItems.length === 0 || placing}
                     animate={placing ? { scale: [1, 0.95, 1.02, 1], rotate: [0, -2, 2, 0] } : {}}
                     transition={{ duration: 0.4 }}
                     whileHover={(!placing && outletId && customerName && customerPhone && cartItems.length > 0) ? { scale: 1.03, boxShadow: "0 8px 28px rgba(75,46,43,0.3)" } : {}}

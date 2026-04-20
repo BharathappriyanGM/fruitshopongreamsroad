@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FiChevronDown } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { FiCalendar, FiUsers, FiMapPin, FiTruck, FiCoffee, FiStar, FiZap } from "react-icons/fi";
-import { API_ENDPOINTS } from "../config/api";
 
 const STALL_MENU = [
   { category: "Fresh Fruit Juices", items: [
@@ -41,7 +40,7 @@ export default function StallEnquiry() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch(API_ENDPOINTS.stallEnquiry, {
+      const res = await fetch("http://localhost:3001/api/stall/enquiry", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
@@ -57,15 +56,13 @@ export default function StallEnquiry() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "#FFF8F0" }}>
+    <div className="stall-bg-page">
       {/* Header */}
       <motion.nav
         initial={{ y: -80, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
         style={{
-          background: "rgba(75, 46, 43, 0.97)",
-          backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)",
-          borderBottom: "1px solid rgba(255,255,255,0.08)",
+          background: "rgba(30, 15, 10, 0.20)", backdropFilter: "blur(4px)", WebkitBackdropFilter: "blur(8px)", borderBottom: "1px solid rgba(255,255,255,0.14)",
           padding: "0 48px", display: "flex", alignItems: "center",
           justifyContent: "space-between", height: 72, position: "sticky",
           top: 0, zIndex: 1000,
@@ -74,8 +71,8 @@ export default function StallEnquiry() {
         <a href="/" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none" }}>
           <img src="/logo.png" alt="" style={{ width: 48, height: 48, borderRadius: "50%", objectFit: "cover", marginRight: 4 }} />
           <div>
-            <div style={{ color: "#fff", fontFamily: "'Fraunces', serif", fontSize: 16, fontWeight: 700, lineHeight: 1.2 }}>Fruit Shop</div>
-            <div style={{ color: "#E8C49A", fontSize: 11, fontWeight: 600 }}>On Greams Road</div>
+            <div style={{ color: "#137c41", fontFamily: "'Fraunces', serif", fontSize: 20, fontWeight: 800, lineHeight: 1.2 }}>Fruit Shop</div>
+            <div style={{ color: "#E91D24", fontSize: 10, fontWeight: 500, textTransform: "uppercase" }}>On Greams Road</div>
           </div>
         </a>
 
@@ -98,7 +95,7 @@ export default function StallEnquiry() {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 8, scale: 0.96 }}
                   transition={{ duration: 0.18 }}
-                  style={{ position: "absolute", top: "calc(100% + 12px)", left: "50%", transform: "translateX(-50%)", background: "rgba(75,46,43,0.97)", backdropFilter: "blur(16px)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 16, padding: "8px", minWidth: 210, zIndex: 2000 }}>
+                  style={{ position: "absolute", top: "calc(100% + 12px)", left: "50%", transform: "translateX(-50%)",background: "rgba(255,255,255,0.12)", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)", border: "1px solid rgba(255,255,255,0.25)", borderRadius: 16, padding: "8px", minWidth: 210, zIndex: 2000 }}>
                   {[
                     { label: "🍹 Pick Me Up", path: "/pickup", sub: "Order fresh to your location" },
                     { label: "🏪 Stall Enquiry", path: "/stall", sub: "Book us for your event" },
@@ -118,7 +115,6 @@ export default function StallEnquiry() {
 
           <li><a onClick={() => { navigate("/"); setTimeout(() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" }), 100); }} style={{ color: "rgba(255,255,255,0.75)", fontWeight: 500, fontSize: 14, textDecoration: "none", cursor: "pointer" }}>About</a></li>
           <li><a onClick={() => { navigate("/"); setTimeout(() => document.getElementById("locations")?.scrollIntoView({ behavior: "smooth" }), 100); }} style={{ color: "rgba(255,255,255,0.75)", fontWeight: 500, fontSize: 14, textDecoration: "none", cursor: "pointer" }}>Locations</a></li>
-          <li><a onClick={() => { navigate("/"); setTimeout(() => document.getElementById("reviews")?.scrollIntoView({ behavior: "smooth" }), 100); }} style={{ color: "rgba(255,255,255,0.75)", fontWeight: 500, fontSize: 14, textDecoration: "none", cursor: "pointer" }}>Reviews</a></li>
         </ul>
 
         <div role="button" tabIndex={0} aria-label="Menu" className="mobile-hamburger"
@@ -143,7 +139,6 @@ export default function StallEnquiry() {
           { label: "🤝 Franchise", href: "/franchise", isRoute: true },
           { label: "About", href: "about", isRoute: true },
           { label: "Locations", href: "locations", isRoute: true },
-          { label: "Reviews", href: "reviews", isRoute: true },
         ].map(({ label, href, isRoute, isHeader }) =>
           isHeader
             ? <div key={label} style={{ fontSize: "11px", fontWeight: 700, color: "rgba(255,255,255,0.35)", textTransform: "uppercase", letterSpacing: "1.5px", padding: "14px 16px 4px" }}>{label}</div>
@@ -171,7 +166,7 @@ export default function StallEnquiry() {
           <h2 style={{ fontSize: "clamp(32px,4vw,52px)", fontWeight: 900, color: "#4B2E2B", lineHeight: 1.15, marginBottom: 12 }}>
             Bring the Freshness<br /><em style={{ color: "#C08552", fontStyle: "italic" }}>To Your Event</em>
           </h2>
-          <p style={{ fontSize: 16, color: "#6B4A3A", fontWeight: 300, lineHeight: 1.7, maxWidth: 560, margin: "0 auto" }}>
+          <p style={{ fontSize: 16, color: "#fff", fontWeight: 300, lineHeight: 1.7, maxWidth: 560, margin: "0 auto" }}>
             Corporate events, weddings, college fests — we set up, squeeze fresh, and make your crowd smile. Book a stall today.
           </p>
         </motion.div>
@@ -200,7 +195,7 @@ export default function StallEnquiry() {
               <motion.div key={activeTab}
                 initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
                 transition={{ duration: 0.25 }}
-                style={{ background: "white", borderRadius: 20, overflow: "hidden", border: "1px solid rgba(192,133,82,0.15)" }}>
+                style={{ background: "rgba(255,255,255,0.55)", backdropFilter: "blur(18px)", WebkitBackdropFilter: "blur(18px)", borderRadius: 20, overflow: "hidden", border: "1px solid rgba(255,255,255,0.65)" }}>
                 <div style={{ background: "#4B2E2B", padding: "14px 20px" }}>
                   <div style={{ color: "#E8C49A", fontSize: 13, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1 }}>{STALL_MENU[activeTab].category}</div>
                 </div>
@@ -224,10 +219,10 @@ export default function StallEnquiry() {
               {[
                 [<FiTruck size={20} color="#4B2E2B" />,   "Event Setup",   "We bring everything"],
                 [<FiCoffee size={20} color="#C08552" />,  "Live Juicing",  "Fresh squeezed on-site"],
-                [<FiStar size={20} color="#E8C49A" />,    "Trained Staff", "Friendly & professional"],
+                [<FiStar size={20} color="#cbc213" />,    "Trained Staff", "Friendly & professional"],
                 [<FiZap size={20} color="#8C5A3C" />,     "Fast Service",  "No long queues"],
               ].map(([icon, title, desc]) => (
-                <div key={title} style={{ background: "white", border: "1px solid rgba(192,133,82,0.15)", borderRadius: 16, padding: "16px" }}>
+                <div key={title} style={{ background: "rgba(255,255,255,0.5)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)", border: "1px solid rgba(255,255,255,0.65)", borderRadius: 16, padding: "16px" }}>
                   <div style={{ marginBottom: 6 }}>{icon}</div>
                   <div style={{ fontSize: 13, fontWeight: 700, color: "#4B2E2B" }}>{title}</div>
                   <div style={{ fontSize: 11, color: "#9ca3af", fontWeight: 300 }}>{desc}</div>
@@ -238,7 +233,7 @@ export default function StallEnquiry() {
 
           {/* Enquiry form */}
           <motion.div initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.2 }}>
-            <div style={{ background: "white", borderRadius: 24, padding: 32, border: "1px solid rgba(192,133,82,0.15)", boxShadow: "0 8px 32px rgba(75,46,43,0.07)" }}>
+            <div style={{ background: "rgba(255,255,255,0.5)", backdropFilter: "blur(22px)", WebkitBackdropFilter: "blur(22px)", borderRadius: 24, padding: 32, border: "1px solid rgba(255,255,255,0.7)", boxShadow: "0 8px 40px rgba(75,46,43,0.12)" }}>
               <div style={{ fontSize: 16, fontWeight: 800, color: "#4B2E2B", marginBottom: 24 }}>Book a Stall for Your Event</div>
 
               {submitted ? (
@@ -253,19 +248,19 @@ export default function StallEnquiry() {
                     <div key={key} style={{ marginBottom: 16 }}>
                       <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: "#4B2E2B", marginBottom: 7 }}>{label}</label>
                       <input required type={type} placeholder={ph} value={form[key]} onChange={set(key)}
-                        style={{ width: "100%", padding: "12px 16px", border: "1.5px solid rgba(192,133,82,0.25)", borderRadius: 12, fontSize: 14, outline: "none", boxSizing: "border-box" }} />
+                        style={{ width: "100%", padding: "12px 16px", border: "1.5px solid rgba(192,133,82,0.25)", borderRadius: 12, fontSize: 14, outline: "none", boxSizing: "border-box", background: "rgba(255,255,255,0.65)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)" }} />
                     </div>
                   ))}
                   <div className="stall-form-grid-2col" style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,1fr)", gap: 14, marginBottom: 16 }}>
                     <div>
                       <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: "#4B2E2B", marginBottom: 7 }}>Contact *</label>
                       <input required placeholder="+91 XXXXXXXXXX" value={form.contact} onChange={set("contact")}
-                        style={{ width: "100%", padding: "12px 16px", border: "1.5px solid rgba(192,133,82,0.25)", borderRadius: 12, fontSize: 14, outline: "none", boxSizing: "border-box" }} />
+                        style={{ width: "100%", padding: "12px 16px", border: "1.5px solid rgba(192,133,82,0.25)", borderRadius: 12, fontSize: 14, outline: "none",background: "rgba(255,255,255,0.65)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", boxSizing: "border-box" }} />
                     </div>
                     <div>
                       <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: "#4B2E2B", marginBottom: 7 }}>Event Type *</label>
                       <select required value={form.eventType} onChange={set("eventType")}
-                        style={{ width: "100%", padding: "12px 16px", border: "1.5px solid rgba(192,133,82,0.25)", borderRadius: 12, fontSize: 14, outline: "none", appearance: "none", background: "white", boxSizing: "border-box" }}>
+                        style={{ width: "100%", padding: "12px 16px", border: "1.5px solid rgba(192,133,82,0.25)", borderRadius: 12, fontSize: 14, outline: "none", appearance: "none", background: "rgba(255,255,255,0.65)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", boxSizing: "border-box" }}>
                         <option value="">Select type</option>
                         {["Corporate Event", "Wedding", "College Fest", "School Event", "Exhibition", "Sports Event", "Other"].map(t => <option key={t}>{t}</option>)}
                       </select>
@@ -274,24 +269,24 @@ export default function StallEnquiry() {
                   <div className="stall-form-grid-2col" style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,1fr)", gap: 14, marginBottom: 16 }}>
                     <div>
                       <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: "#4B2E2B", marginBottom: 7 }}><FiCalendar size={12} style={{ marginRight: 4 }} />Event Date *</label>
-                      <input required type="date" value={form.date} onChange={set("date")}
-                        style={{ width: "100%", padding: "12px 16px", border: "1.5px solid rgba(192,133,82,0.25)", borderRadius: 12, fontSize: 14, outline: "none", boxSizing: "border-box" }} />
+                      <input required type="date" value={form.date} onChange={set("date")} min={new Date().toISOString().split("T")[0]}
+                        style={{ width: "100%", padding: "12px 16px", border: "1.5px solid rgba(192,133,82,0.25)", borderRadius: 12, fontSize: 14, outline: "none",background: "rgba(255,255,255,0.65)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", boxSizing: "border-box" }} />
                     </div>
                     <div>
                       <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: "#4B2E2B", marginBottom: 7 }}><FiUsers size={12} style={{ marginRight: 4 }} />Expected Guests *</label>
                       <input required type="number" placeholder="e.g. 500" value={form.guests} onChange={set("guests")}
-                        style={{ width: "100%", padding: "12px 16px", border: "1.5px solid rgba(192,133,82,0.25)", borderRadius: 12, fontSize: 14, outline: "none", boxSizing: "border-box" }} />
+                        style={{ width: "100%", padding: "12px 16px", border: "1.5px solid rgba(192,133,82,0.25)", borderRadius: 12, fontSize: 14, outline: "none",background: "rgba(255,255,255,0.65)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", boxSizing: "border-box" }} />
                     </div>
                   </div>
                   <div style={{ marginBottom: 16 }}>
                     <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: "#4B2E2B", marginBottom: 7 }}><FiMapPin size={12} style={{ marginRight: 4 }} />Venue / City *</label>
                     <input required placeholder="Event venue and city" value={form.venue} onChange={set("venue")}
-                      style={{ width: "100%", padding: "12px 16px", border: "1.5px solid rgba(192,133,82,0.25)", borderRadius: 12, fontSize: 14, outline: "none" }} />
+                      style={{ width: "100%", padding: "12px 16px", border: "1.5px solid rgba(192,133,82,0.25)", borderRadius: 12, fontSize: 14,background: "rgba(255,255,255,0.65)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", outline: "none" }} />
                   </div>
                   <div style={{ marginBottom: 20 }}>
                     <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: "#4B2E2B", marginBottom: 7 }}>Additional Notes</label>
                     <textarea placeholder="Any specific requirements, theme, or details..." value={form.message} onChange={set("message")}
-                      style={{ width: "100%", padding: "12px 16px", border: "1.5px solid rgba(192,133,82,0.25)", borderRadius: 12, fontSize: 14, outline: "none", minHeight: 90, resize: "vertical" }} />
+                      style={{ width: "100%", padding: "12px 16px", border: "1.5px solid rgba(192,133,82,0.25)", borderRadius: 12, fontSize: 14, outline: "none", minHeight: 90,background: "rgba(255,255,255,0.65)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", resize: "vertical" }} />
                   </div>
                   {error && (
                     <div style={{ background: "#fef2f2", border: "1px solid #fecaca", borderRadius: 10, padding: "10px 16px", marginBottom: 16, color: "#dc2626", fontSize: 13 }}>
