@@ -49,6 +49,15 @@ app.options('*', cors(corsOptions));
 
 app.use(express.json());
 
+const path = require('path');
+app.use(express.static(path.join(__dirname, '../dist')));
+
+app.get('*', (req, res) => {
+  if (!req.path.startsWith('/api')) {
+    return res.sendFile(path.join(__dirname, '../dist/index.html'));
+  }
+});
+
 // Routes
 app.use('/api/franchise', franchiseRoutes);
 app.use('/api/stall', stallRoutes);
