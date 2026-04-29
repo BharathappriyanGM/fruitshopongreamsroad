@@ -1,6 +1,5 @@
 /* ── Google Fonts ───────────────────────────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;0,9..40,900;1,9..40,300;1,9..40,400&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Merienda:wght@400;600;700;800;900&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400&display=swap');
 /* ── Global Reset ───────────────────────────────────────────────────────────── */
 * {
   margin: 0;
@@ -9,8 +8,8 @@
 }
 
 :root {
-  --font-brand: 'Fraunces', Georgia, serif;
-  --font-ui: 'Quicksand', 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-brand: 'Merienda', Georgia, serif;
+  --font-ui: 'Poppins', system-ui, sans-serif;
 
   /* ── New Warm Brown Palette ── */
   --cream:        #FFF8F0;   /* warm cream — page backgrounds, cards */
@@ -31,6 +30,107 @@
   --white:        #FFFFFF;
   --text:         #2C1810;   /* very dark brown for body text */
   --text-light:   #6B4A3A;   /* medium brown for secondary text */
+}
+
+/* ── Font Visibility — All Devices ─────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6,
+.hero-title, .section-title, .footer-brand-name,
+.fbs-brand-name, .nav-logo-text, .header-title,
+.product-name, .outlet-name, .pillar-title {
+  font-family: 'Merienda', Georgia, serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+p, span, a, label, input, select, textarea, button,
+.hero-subtitle, .about-text, .product-desc, .fbs-desc,
+.outlet-address, .review-text, .footer-tagline,
+.section-subtitle, .nav-links a, .section-label,
+.pillar-desc, .review-name {
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-weight: 500;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Section-specific subtext brightness fixes ──────────────────────────── */
+
+/* Hero — already on dark bg, lift opacity */
+.hero-subtitle {
+  color: rgba(255, 255, 255, 0.97) !important;
+  font-weight: 500 !important;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
+}
+
+/* About — dark bg with image, needs strong contrast */
+.about-text {
+  color: rgba(255, 255, 255, 0.95) !important;
+  font-weight: 500 !important;
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
+}
+.pillar-desc {
+  color: rgba(255, 255, 255, 0.88) !important;
+  font-weight: 500 !important;
+}
+.pillar-title {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+/* Products — light bg, use deep brown */
+.product-desc {
+  color: #3D1F1A !important;
+  font-weight: 500 !important;
+}
+.section-subtitle {
+  color: #3D1F1A !important;
+  font-weight: 600 !important;
+}
+
+/* Footer — dark bg */
+.footer-tagline {
+  color: rgba(255, 255, 255, 0.95) !important;
+  font-weight: 500 !important;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+.footer-contact-info {
+  color: rgba(255, 255, 255, 0.9) !important;
+  font-weight: 500 !important;
+}
+
+/* Outlet / Locations */
+.outlet-address {
+  color: #3D1F1A !important;
+  font-weight: 500 !important;
+}
+
+/* Franchise side desc */
+.fbs-desc {
+  color: rgba(255, 255, 255, 0.92) !important;
+  font-weight: 500 !important;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Review text */
+.review-text {
+  color: #3D1F1A !important;
+  font-weight: 500 !important;
+}
+
+/* ── Mobile font legibility boost ───────────────────────────────────────── */
+@media (max-width: 479px) {
+  h1, h2, h3, .hero-title, .section-title { letter-spacing: -0.2px; }
+  p, .hero-subtitle, .about-text, .section-subtitle { font-size: 13px; line-height: 1.75; font-weight: 500; }
+  .nav-logo-text { font-size: 13px; }
+  .pillar-desc { font-size: 11px; font-weight: 500; }
+}
+@media (min-width: 480px) and (max-width: 767px) {
+  p, .hero-subtitle, .about-text { font-size: 14px; line-height: 1.7; font-weight: 500; }
+  .pillar-desc { font-size: 12px; }
+}
+@media (min-width: 768px) and (max-width: 1024px) {
+  p, .hero-subtitle, .about-text { font-size: 15px; font-weight: 500; }
 }
 
 html { scroll-behavior: smooth; }
@@ -57,6 +157,8 @@ body {
 .landing-page .footer-brand-name,
 .landing-page .fbs-brand-name {
   font-family: var(--font-brand);
+  font-feature-settings: "kern" 1;
+  -webkit-font-smoothing: antialiased;
   font-weight: 800;
 }
 
@@ -80,7 +182,7 @@ body {
   display: flex; align-items: center; justify-content: space-between;
   height: 72px;
 }
-.nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.nav-logo { display: flex; align-items: center; gap: 2px; text-decoration: none; }
 .nav-logo-circle {
   width: 46px; height: 46px; border-radius: 50%;
   background: var(--caramel); display: flex; align-items: center; justify-content: center;
@@ -88,11 +190,11 @@ body {
 }
 .nav-logo-circle img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
 .nav-logo-text {
-  font-family: 'Fraunces', serif;
+  font-family: 'Merienda', serif;
   font-weight: 800; font-size: 20px; color: #ffffff; line-height: 1.2;
 }
 .nav-logo-sub { font-size: 10px; color: #E8C49A; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; }
-.nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
+.nav-links { display: flex; align-items: center; gap: 32px; list-style: none; color: #009A44; }
 .nav-links a {
   font-family: var(--font-ui);
   font-size: 14.5px;
@@ -336,7 +438,7 @@ footer {
   100% { transform: scale(1.15) rotate(0deg); }
 }
 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-.header-title { font-size: 24px; font-weight: 800; color: #4B2E2B; letter-spacing: 0.5px; }
+.header-title { font-size: 24px; font-weight: 800; color: #4B2E2B; letter-spacing: 0.5px; font-family: 'Merienda', serif; }
 .header-subtitle { font-size: 13px; color: #6b7280; margin-top: 4px; }
 
 .steps-bar { display: flex; gap: 8px; margin-bottom: 24px; }
@@ -794,7 +896,7 @@ footer > * { position: relative; z-index: 1; }
 /* ── Franchise / Stall / PickMeUp page backgrounds ─────────── */
 .franchise-bg-page {
   min-height: 100vh;
-  background-image: url('/images/bg-franchise.jpg');
+  background-image: url('/images/bg-franchise.jpeg');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
