@@ -152,7 +152,7 @@ function ProductCard({ p, i, onAddToCart }) {
       <div style={{ borderRadius: 28, overflow: "hidden", background: "rgba(255,255,255,0.18)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", border: "1px solid rgba(255,255,255,0.35)" }}>
         {/* Gradient header */}
         <div style={{
-          background: p.bg, height: 220, position: "relative",
+          background: p.bg, height: 260, position: "relative",
           display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden"
         }}>
           <div style={{ position: "absolute", width: 180, height: 180, borderRadius: "50%", background: "rgba(255,255,255,0.1)", top: -40, right: -40 }} />
@@ -163,7 +163,7 @@ function ProductCard({ p, i, onAddToCart }) {
           </div>
           <motion.img src={p.img} alt={p.alt}
             style={{
-              width: 150, height: 150, objectFit: "cover", borderRadius: "50%",
+              width: 180, height: 180, objectFit: "cover", borderRadius: "50%",
               border: "5px solid rgba(255,255,255,0.5)",
               boxShadow: "0 16px 48px rgba(0,0,0,0.22)", position: "relative", zIndex: 2
             }}
@@ -171,12 +171,12 @@ function ProductCard({ p, i, onAddToCart }) {
         </div>
 
         {/* Card body */}
-        <div className="product-glass-body" style={{ padding: "22px 20px 20px" }}>
+        <div className="product-glass-body" style={{ padding: "26px 24px 24px" }}>
           <div style={{ width: 36, height: 4, borderRadius: 2, background: p.accent, marginBottom: 12 }} />
-          <div style={{ fontSize: 19, fontWeight: 800, color: "#2C1810", marginBottom: 6, lineHeight: 1.2 }}>
+          <div style={{ fontSize: 22, fontWeight: 800, color: "#2C1810", marginBottom: 8, lineHeight: 1.2 }}>
             {p.name}
           </div>
-          <p style={{ fontSize: 13, color: "#43322b", lineHeight: 1.65, marginBottom: 20, fontWeight: 400, minHeight: 44 }}>
+          <p style={{ fontSize: 15, color: "#43322b", lineHeight: 1.7, marginBottom: 20, fontWeight: 400, minHeight: 44 }}>
             {p.desc}
           </p>
         </div>
@@ -196,8 +196,8 @@ function ProductWheel({ products, onAddToCart }) {
     return () => window.removeEventListener("resize", update);
   }, []);
 
-  const RADIUS = isMobile ? 130 : 210;
-  const ITEM_SIZE = isMobile ? 64 : 80;
+  const RADIUS = isMobile ? 140 : 220;
+  const ITEM_SIZE = isMobile ? 70 : 85;
   const containerSize = RADIUS * 2 + ITEM_SIZE + 24;
   const center = containerSize / 2;
 
@@ -273,9 +273,9 @@ function ProductWheel({ products, onAddToCart }) {
                     style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
                 </div>
                 <div style={{
-                  position: "absolute", bottom: -18, left: "50%",
+                  position: "absolute", bottom: -22, left: "50%",
                   transform: "translateX(-50%)", whiteSpace: "nowrap",
-                  fontSize: isMobile ? 9 : 10, fontWeight: 700,
+                  fontSize: isMobile ? 10 : 12, fontWeight: 700,
                   color: isSelected ? "#4B2E2B" : "#9ca3af",
                   letterSpacing: "0.3px", transition: "color 0.3s",
                 }}>
@@ -302,7 +302,7 @@ function ProductWheel({ products, onAddToCart }) {
           style={{
             position: "absolute", top: "50%", left: "50%",
             x: "-50%", y: "-50%",
-            width: isMobile ? 90 : 140, height: isMobile ? 90 : 140,
+            width: isMobile ? 110 : 175, height: isMobile ? 110 : 175,
             background: "transparent", border: "none",
             cursor: spinning ? "default" : "pointer",
             display: "flex", alignItems: "center", justifyContent: "center", zIndex: 20,
@@ -315,7 +315,7 @@ function ProductWheel({ products, onAddToCart }) {
       {/* Card */}
       <div style={{
         flex: 1, width: isMobile ? "100%" : "auto",
-        maxWidth: 480, minWidth: isMobile ? "unset" : 360,
+        maxWidth: 540, minWidth: isMobile ? "unset" : 420,
       }}>
         <AnimatePresence mode="wait">
           <motion.div key={selectedIdx}
@@ -358,17 +358,16 @@ export default function FruitShopLanding({ cart, setCart }) {
         initial={{ y: -80, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
         style={{ 
-          background: "rgba(30, 15, 10, 0.15)", /* Glass transparent background */
-          backdropFilter: "blur(6px)",         /* Blur effect */
-          WebkitBackdropFilter: "blur(6px)",   /* Safari support */
+          background: "rgba(30, 15, 10, 0.44)", /* Glass transparent background */
+          backdropFilter: "blur(16px)",         /* Blur effect */
+          WebkitBackdropFilter: "blur(16px)",   /* Safari support */
           borderBottom: "1px solid rgba(255,255,255,0.12)" 
         }}>
 
         <a href="#" className="nav-logo">
-          <img src="/logo.png" alt="" style={{ height: 48, width: "auto", marginRight: 4 }} />
+          <img src="/logo.png" alt="" style={{ height: 50, width: "auto" }} />
           <div>
-            <div className="nav-logo-text" style={{ color: "#137c41", fontFamily: "'Fraunces', serif" }}>Fruit Shop</div>
-            <div className="nav-logo-sub" style={{ color: "#E91D24" }}>ON GREAMS ROAD</div>
+            <img src="/logo-name.png" alt="Fruit Shop on Greams Road" style={{ height: 55, width: "auto", marginTop: 3 }} />
           </div>
         </a>
 
@@ -395,7 +394,7 @@ export default function FruitShopLanding({ cart, setCart }) {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 8, scale: 0.96 }}
                   transition={{ duration: 0.18 }}
-                  style={{ position: "absolute", top: "calc(100% + 12px)", left: "50%", transform: "translateX(-50%)", background: "rgba(30,10,8,0.35)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", border: "1px solid rgba(255,255,255,0.2)", borderRadius: 16, padding: "8px", minWidth: 210, zIndex: 2000, boxShadow: "0 8px 32px rgba(0,0,0,0.25)" }}>
+                  style={{ position: "absolute", top: "calc(100% + 12px)", left: "50%", transform: "translateX(-50%)", background: "rgba(30, 15, 10, 0.44)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", border: "1px solid rgba(255,255,255,0.2)", borderRadius: 16, padding: "8px", minWidth: 210, zIndex: 2000, boxShadow: "0 8px 32px rgba(0,0,0,0.25)" }}>
                   {[
                     { label: "🍹 Pick Me Up", path: "/pickup", sub: "Order fresh to your location" },
                     { label: "🏪 Stall Enquiry", path: "/stall", sub: "Book us for your event" },
@@ -546,7 +545,7 @@ export default function FruitShopLanding({ cart, setCart }) {
           <motion.blockquote
             initial={{ opacity: 0, x: -32 }} whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }} transition={{ duration: 0.7, delay: 0.1 }}
-            style={{ borderLeft: "3px solid #C08552", paddingLeft: 20, margin: "20px 0 32px", fontStyle: "italic", fontSize: 18, fontWeight: 300, color: "#ffffff", lineHeight: 1.8, maxWidth: 700 }}>
+            style={{ borderLeft: "3px solid #C08552", paddingLeft: 20, margin: "20px 0 32px", fontStyle: "italic", fontSize: 18, fontWeight: 500, color: "#ffffff", lineHeight: 1.8, maxWidth: 700 }}>
             "When you have our juices there is no dying off of the taste buds with age. They tingle all the time, in anticipation!"
           </motion.blockquote>
 
@@ -616,7 +615,7 @@ export default function FruitShopLanding({ cart, setCart }) {
           <motion.h3
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }} transition={{ duration: 0.6 }}
-            style={{ fontSize: "clamp(22px, 3vw, 30px)", fontWeight: 700, color: "#E8C49A", margin: "0 0 16px", letterSpacing: "-0.3px" }}>
+            style={{ fontSize: "clamp(26px, 3.5vw, 36px)", fontWeight: 900, color: "#E8C49A", margin: "0 0 16px", letterSpacing: "-0.3px", textShadow: "0 2px 12px rgba(0,0,0,0.4)" }}>
             Haven't we come a long way?
           </motion.h3>
           <p className="about-text">
@@ -685,10 +684,10 @@ export default function FruitShopLanding({ cart, setCart }) {
                     <img src="/logo.png" alt="Logo" style={{ width: 22, height: 22, borderRadius: "50%", objectFit: "cover", border: `2px solid ${cc.color}` }} />
                   </div>
                   <div style={{ padding: "7px 10px 8px", flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 3, textAlign: "center" }}>
-                    <span style={{ fontSize: 8, fontWeight: 700, textTransform: "uppercase", letterSpacing: "1.2px", color: cc.color, background: cc.bg, padding: "2px 7px", borderRadius: 100 }}>{o.city}</span>
-                    <div style={{ fontSize: 11, fontWeight: 800, color: "#2C1810", lineHeight: 1.2 }}>{o.name}</div>
-                    <p style={{ fontSize: 9, color: "#6b7280", lineHeight: 1.5, margin: "2px 0 0", fontWeight: 400 }}>{o.address}</p>
-                    <div style={{ marginTop: 3, fontSize: 9, fontWeight: 700, color: cc.color, display: "flex", alignItems: "center", gap: 3 }}>
+                    <span style={{ fontSize: 8, fontWeight: 700, textTransform: "uppercase", letterSpacing: "1.2px", color: cc.color, background: cc.bg, padding: "2px 7px", borderRadius: 100, fontFamily: "'Poppins', sans-serif" }}>{o.city}</span>
+                    <div style={{ fontSize: 11, fontWeight: 800, color: "#2C1810", lineHeight: 1.2, fontFamily: "'Merienda', serif" }}>{o.name}</div>
+                    <p style={{ fontSize: 9, color: "#6b7280", lineHeight: 1.5, margin: "2px 0 0", fontWeight: 400, fontFamily: "'Poppins', sans-serif" }}>{o.address}</p>
+                    <div style={{ marginTop: 3, fontSize: 9, fontWeight: 700, color: cc.color, display: "flex", alignItems: "center", gap: 3, fontFamily: "'Poppins', sans-serif" }}>
                       <FiMapPin size={8} /> Get Directions
                     </div>
                   </div>
@@ -719,10 +718,10 @@ export default function FruitShopLanding({ cart, setCart }) {
                       <img src="/logo.png" alt="Logo" style={{ width: 22, height: 22, borderRadius: "50%", objectFit: "cover", border: `2px solid ${cc.color}` }} />
                     </div>
                     <div style={{ padding: "7px 8px 8px", flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 3, textAlign: "center" }}>
-                      <span style={{ fontSize: 8, fontWeight: 700, textTransform: "uppercase", letterSpacing: "1.2px", color: cc.color, background: cc.bg, padding: "2px 7px", borderRadius: 100 }}>{o.city}</span>
-                      <div style={{ fontSize: 11, fontWeight: 800, color: "#2C1810", lineHeight: 1.2 }}>{o.name}</div>
-                      <p style={{ fontSize: 9, color: "#6b7280", lineHeight: 1.5, margin: "2px 0 0", fontWeight: 400 }}>{o.address}</p>
-                      <div style={{ marginTop: 3, fontSize: 9, fontWeight: 700, color: cc.color, display: "flex", alignItems: "center", gap: 3 }}>
+                      <span style={{ fontSize: 8, fontWeight: 700, textTransform: "uppercase", letterSpacing: "1.2px", color: cc.color, background: cc.bg, padding: "2px 7px", borderRadius: 100, fontFamily: "'Poppins', sans-serif" }}>{o.city}</span>
+                      <div style={{ fontSize: 11, fontWeight: 800, color: "#2C1810", lineHeight: 1.2, fontFamily: "'Merienda', serif" }}>{o.name}</div>
+                      <p style={{ fontSize: 9, color: "#6b7280", lineHeight: 1.5, margin: "2px 0 0", fontWeight: 400, fontFamily: "'Poppins', sans-serif" }}>{o.address}</p>
+                      <div style={{ marginTop: 3, fontSize: 9, fontWeight: 700, color: cc.color, display: "flex", alignItems: "center", gap: 3, fontFamily: "'Poppins', sans-serif" }}>
                         <FiMapPin size={8} /> Get Directions
                       </div>
                     </div>
@@ -758,10 +757,10 @@ export default function FruitShopLanding({ cart, setCart }) {
                       <img src="/logo.png" alt="Logo" style={{ width: 22, height: 22, borderRadius: "50%", objectFit: "cover", border: `2px solid ${cc.color}` }} />
                     </div>
                     <div style={{ padding: "7px 10px 8px", flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 3, textAlign: "center" }}>
-                      <span style={{ fontSize: 8, fontWeight: 700, textTransform: "uppercase", letterSpacing: "1.2px", color: cc.color, background: cc.bg, padding: "2px 7px", borderRadius: 100 }}>{o.city}</span>
-                      <div style={{ fontSize: 11, fontWeight: 800, color: "#2C1810", lineHeight: 1.2 }}>{o.name}</div>
-                      <p style={{ fontSize: 9, color: "#6b7280", lineHeight: 1.5, margin: "2px 0 0", fontWeight: 400 }}>{o.address}</p>
-                      <div style={{ marginTop: 3, fontSize: 9, fontWeight: 700, color: cc.color, display: "flex", alignItems: "center", gap: 3 }}>
+                      <span style={{ fontSize: 8, fontWeight: 700, textTransform: "uppercase", letterSpacing: "1.2px", color: cc.color, background: cc.bg, padding: "2px 7px", borderRadius: 100, fontFamily: "'Poppins', sans-serif" }}>{o.city}</span>
+                      <div style={{ fontSize: 11, fontWeight: 800, color: "#2C1810", lineHeight: 1.2, fontFamily: "'Merienda', serif" }}>{o.name}</div>
+                      <p style={{ fontSize: 9, color: "#6b7280", lineHeight: 1.5, margin: "2px 0 0", fontWeight: 400, fontFamily: "'Poppins', sans-serif" }}>{o.address}</p>
+                      <div style={{ marginTop: 3, fontSize: 9, fontWeight: 700, color: cc.color, display: "flex", alignItems: "center", gap: 3, fontFamily: "'Poppins', sans-serif" }}>
                         <FiMapPin size={8} /> Get Directions
                       </div>
                     </div>
@@ -791,10 +790,10 @@ export default function FruitShopLanding({ cart, setCart }) {
                       <img src="/logo.png" alt="Logo" style={{ width: 22, height: 22, borderRadius: "50%", objectFit: "cover", border: `2px solid ${cc.color}` }} />
                     </div>
                     <div style={{ padding: "7px 12px 9px", flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 3, textAlign: "center" }}>
-                      <span style={{ fontSize: 8, fontWeight: 700, textTransform: "uppercase", letterSpacing: "1.2px", color: cc.color, background: cc.bg, padding: "2px 8px", borderRadius: 100 }}>{o.city}</span>
-                      <div style={{ fontSize: 11, fontWeight: 800, color: "#2C1810", lineHeight: 1.2 }}>{o.name}</div>
-                      <p style={{ fontSize: 9, color: "#6b7280", lineHeight: 1.55, margin: "2px 0 0", fontWeight: 400 }}>{o.address}</p>
-                      <div style={{ marginTop: 3, fontSize: 9, fontWeight: 700, color: cc.color, display: "flex", alignItems: "center", gap: 3 }}>
+                      <span style={{ fontSize: 8, fontWeight: 700, textTransform: "uppercase", letterSpacing: "1.2px", color: cc.color, background: cc.bg, padding: "2px 8px", borderRadius: 100, fontFamily: "'Poppins', sans-serif" }}>{o.city}</span>
+                      <div style={{ fontSize: 11, fontWeight: 800, color: "#2C1810", lineHeight: 1.2, fontFamily: "'Merienda', serif" }}>{o.name}</div>
+                      <p style={{ fontSize: 9, color: "#6b7280", lineHeight: 1.55, margin: "2px 0 0", fontWeight: 400, fontFamily: "'Poppins', sans-serif" }}>{o.address}</p>
+                      <div style={{ marginTop: 3, fontSize: 9, fontWeight: 700, color: cc.color, display: "flex", alignItems: "center", gap: 3, fontFamily: "'Poppins', sans-serif" }}>
                         <FiMapPin size={8} /> Get Directions
                       </div>
                     </div>

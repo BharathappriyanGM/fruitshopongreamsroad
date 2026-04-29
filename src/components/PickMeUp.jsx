@@ -166,29 +166,27 @@ export default function PickMeUp() {
         initial={{ y: -80, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
         style={{
-          background: "rgba(30, 15, 10, 0.20)",
-          backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)",
+          background: "#FFFFF", backdropFilter: "blur(28px)", WebkitBackdropFilter: "blur(28px)",
           borderBottom: "1px solid rgba(255,255,255,0.14)",
           padding: "0 48px", display: "flex", alignItems: "center",
           justifyContent: "space-between", height: 72, position: "sticky",
           top: 0, zIndex: 1000,
         }}>
 
-        <a href="/" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none" }}>
-          <img src="/logo.png" alt="" style={{ width: 48, height: 48, borderRadius: "50%", objectFit: "cover", marginRight: 4 }} />
+        <a href="/" style={{ display: "flex", alignItems: "center", gap: 2, textDecoration: "none" }}>
+          <img src="/logo.png" alt="" style={{ width: 55, height: 55, borderRadius: "50%", objectFit: "cover", marginRight: 3 }} />
           <div>
-            <div style={{ color: "#137c41", fontFamily: "'Fraunces', serif", fontWeight: 800, fontSize: 20, lineHeight: 1.2 }}>Fruit Shop</div>
-            <div style={{ color: "#E91D24", fontSize: 10, fontWeight: 500, textTransform: "uppercase" }}>On Greams Road</div>
+            <img src="/logo-name.png" alt="Fruit Shop on Greams Road" style={{ height: 55, width: "auto", marginTop: 4 }} />
           </div>
         </a>
 
         <ul style={{ display: "flex", alignItems: "center", gap: 32, listStyle: "none", margin: 0, padding: 0 }} className="nav-links">
-          <li><a onClick={() => { navigate("/"); setTimeout(() => document.getElementById("products")?.scrollIntoView({ behavior: "smooth" }), 100); }} style={{ color: "rgba(255,255,255,0.75)", fontWeight: 500, fontSize: 14, textDecoration: "none", cursor: "pointer" }}>Menu</a></li>
+          <li><a onClick={() => { navigate("/"); setTimeout(() => document.getElementById("products")?.scrollIntoView({ behavior: "smooth" }), 100); }} style={{ color: "#ffffff", fontWeight: 600, fontSize: 14, textDecoration: "none", cursor: "pointer", fontFamily: "'Poppins', sans-serif" }}>Menu</a></li>
 
           <li style={{ position: "relative" }}
             onMouseEnter={() => setServicesOpen(true)}
             onMouseLeave={() => setServicesOpen(false)}>
-            <button style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 4, color: "rgba(255,255,255,0.75)", fontWeight: 500, fontSize: 14, padding: 0 }}>
+            <button style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 4, color: "#ffffff", fontWeight: 600, fontSize: 14, padding: 0, fontFamily: "'Poppins', sans-serif" }}>
               Services
               <motion.span animate={{ rotate: servicesOpen ? 180 : 0 }} transition={{ duration: 0.2 }}>
                 <FiChevronDown size={14} />
@@ -201,7 +199,7 @@ export default function PickMeUp() {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 8, scale: 0.96 }}
                   transition={{ duration: 0.18 }}
-                  style={{ position: "absolute", top: "calc(100% + 12px)", left: "50%", transform: "translateX(-50%)",background: "rgba(255,255,255,0.12)", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)", border: "1px solid rgba(255,255,255,0.25)", borderRadius: 16, padding: "8px", minWidth: 210, zIndex: 2000 }}>
+                  style={{ position: "absolute", top: "calc(100% + 12px)", left: "50%", transform: "translateX(-50%)", background: "rgba(30, 15, 10, 0.44)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", border: "1px solid rgba(255,255,255,0.25)", borderRadius: 16, padding: "8px", minWidth: 210, zIndex: 2000 }}>
                   {[
                     { label: "🍹 Pick Me Up", path: "/pickup", sub: "Order fresh to your location" },
                     { label: "🏪 Stall Enquiry", path: "/stall", sub: "Book us for your event" },
@@ -210,8 +208,8 @@ export default function PickMeUp() {
                     <motion.div key={label} whileHover={{ background: "rgba(255,255,255,0.08)", x: 3 }}
                       onClick={() => { navigate(path); setServicesOpen(false); }}
                       style={{ padding: "10px 14px", borderRadius: 10, cursor: "pointer" }}>
-                      <div style={{ color: "#fff", fontWeight: 600, fontSize: 14 }}>{label}</div>
-                      <div style={{ color: "rgba(255,255,255,0.45)", fontSize: 11, marginTop: 2 }}>{sub}</div>
+                      <div style={{ color: "#fff", fontWeight: 700, fontSize: 14, fontFamily: "'Merienda', serif" }}>{label}</div>
+                      <div style={{ color: "rgba(255,255,255,0.82)", fontSize: 12, marginTop: 2, fontWeight: 600, fontFamily: "'Poppins', sans-serif", textWrap: "nowrap" }}>{sub}</div>
                     </motion.div>
                   ))}
                 </motion.div>
@@ -219,8 +217,8 @@ export default function PickMeUp() {
             </AnimatePresence>
           </li>
 
-          <li><a onClick={() => { navigate("/"); setTimeout(() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" }), 100); }} style={{ color: "rgba(255,255,255,0.75)", fontWeight: 500, fontSize: 14, textDecoration: "none", cursor: "pointer" }}>About</a></li>
-          <li><a onClick={() => { navigate("/"); setTimeout(() => document.getElementById("locations")?.scrollIntoView({ behavior: "smooth" }), 100); }} style={{ color: "rgba(255,255,255,0.75)", fontWeight: 500, fontSize: 14, textDecoration: "none", cursor: "pointer" }}>Locations</a></li>
+          <li><a onClick={() => { navigate("/"); setTimeout(() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" }), 100); }} style={{ color: "#ffffff", fontWeight: 600, fontSize: 14, textDecoration: "none", cursor: "pointer", fontFamily: "'Poppins', sans-serif" }}>About</a></li>
+          <li><a onClick={() => { navigate("/"); setTimeout(() => document.getElementById("locations")?.scrollIntoView({ behavior: "smooth" }), 100); }} style={{ color: "#ffffff", fontWeight: 600, fontSize: 14, textDecoration: "none", cursor: "pointer", fontFamily: "'Poppins', sans-serif" }}>Locations</a></li>
         </ul>
 
         <div role="button" tabIndex={0} aria-label="Menu" className="mobile-hamburger"
@@ -275,8 +273,8 @@ export default function PickMeUp() {
             style={{ background: "rgba(255,255,255,0.12)", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)", border: "1px solid rgba(255,255,255,0.35)", borderRadius: 24, padding: "32px 36px", marginBottom: 32, position: "relative", overflow: "hidden", boxShadow: "0 8px 32px rgba(0,0,0,0.12)" }}>
             <motion.div style={{ position: "absolute", right: -40, top: -40, width: 200, height: 200, borderRadius: "50%", background: "rgba(232,196,154,0.08)" }}
               animate={{ scale: [1, 1.1, 1] }} transition={{ duration: 6, repeat: Infinity }} />
-            <h3 style={{ fontSize: 22, fontWeight: 900, color: "#fff", marginBottom: 14, textShadow: "0 1px 8px rgba(0,0,0,0.4)" }}>More Than Juice</h3>
-              <p style={{ fontSize: 14, color: "#fff", fontWeight: 500, lineHeight: 1.8, marginBottom: 12,justifyContent:"center", textAlign:"justify" }}>
+            <h3 style={{ fontSize: 26, fontWeight: 900, color: "#fff", marginBottom: 14, textShadow: "0 2px 12px rgba(0,0,0,0.5)", fontFamily: "'Merienda', serif", letterSpacing: "-0.3px" }}>More Than Juice</h3>
+              <p style={{ fontSize: 15, color: "#ffffff", fontWeight: 600, lineHeight: 1.85, marginBottom: 12, justifyContent: "center", textAlign: "justify", fontFamily: "'Poppins', sans-serif", textShadow: "0 1px 4px rgba(0,0,0,0.2)" }}>
                 We don't bottle or process nature, we serve it pure. We never use preservatives, artificial colors, or synthetic sweeteners. Instead, we use imagination to create <strong style={{ color: "#FFD9A0" }}>120+ unique varieties</strong> of healthy, caffeine free "pick-me-ups" that far surpass standard coffee or soda.
                 <br /><br />Whether you need a morning energy boost, a midday recovery, or a refreshing evening treat — our juices provide the <em style={{ color: "#FFD9A0" }}>"vim and verve"</em> to power your day.
               </p>
@@ -290,7 +288,7 @@ export default function PickMeUp() {
           {/* Location selector */}
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }}
             style={{ marginBottom: 32 }}>
-            <label style={{ display: "block", fontSize: 13, fontWeight: 700, color: "#4B2E2B", marginBottom: 8, textTransform: "uppercase", letterSpacing: 1 }}>📍 Select Your Outlet</label>
+            <label style={{ display: "block", fontSize: 13, fontWeight: 800, color: "#2C1810", marginBottom: 8, textTransform: "uppercase", letterSpacing: 1, fontFamily: "'Poppins', sans-serif" }}>📍 Select Your Outlet</label>
             <select value={outletId} onChange={e => setOutletId(e.target.value)}
               style={{ width: "100%", padding: "14px 18px", border: "2px solid rgba(192,133,82,0.25)", borderRadius: 14, fontSize: 14, outline: "none", background: "white", appearance: "none", color: outletId ? "#2C1810" : "#9ca3af", cursor: "pointer" }}>
               <option value="">Choose the nearest outlet...</option>
@@ -320,10 +318,10 @@ export default function PickMeUp() {
                   style={{ fontSize: 56, marginBottom: 20 }}>
                   🍹
                 </motion.div>
-                <div style={{ fontSize: 20, fontWeight: 800, color: "#4B2E2B", marginBottom: 10 }}>
+                <div style={{ fontSize: 22, fontWeight: 900, color: "#4B2E2B", marginBottom: 10, fontFamily: "'Merienda', serif" }}>
                   Pick your outlet first!
                 </div>
-                <p style={{ fontSize: 14, color: "#9ca3af", lineHeight: 1.7, maxWidth: 340, fontWeight: 400 }}>
+                <p style={{ fontSize: 14, color: "#6b7280", lineHeight: 1.7, maxWidth: 340, fontWeight: 600, fontFamily: "'Poppins', sans-serif" }}>
                   Please select your nearest outlet above to browse our fresh menu and place your order.
                 </p>
                 <motion.div
@@ -346,7 +344,7 @@ export default function PickMeUp() {
                     <motion.div key={cat.category} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: ci * 0.1 }} style={{ marginBottom: 28 }}>
                       <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
                         <div style={{ width: 4, height: 20, background: accent, borderRadius: 2 }} />
-                        <div style={{ fontSize: 15, fontWeight: 800, color: "#2C1810" }}>{cat.category}</div>
+                        <div style={{ fontSize: 16, fontWeight: 900, color: "#2C1810", fontFamily: "'Merienda', serif" }}>{cat.category}</div>
                       </div>
                       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 12 }}>
                         {cat.items.map((item, ii) => {
@@ -367,7 +365,7 @@ export default function PickMeUp() {
                                   style={{ width: "100%", height: "100%", objectFit: "cover" }}
                                   onError={(e) => { e.target.style.display = "none"; }} />
                               </div>
-                              <div style={{ fontSize: 14, fontWeight: 700, color: "#2C1810", marginBottom: 12, lineHeight: 1.3 }}>{item.name}</div>
+                              <div style={{ fontSize: 14, fontWeight: 800, color: "#1a0f0d", marginBottom: 12, lineHeight: 1.3, fontFamily: "'Poppins', sans-serif" }}>{item.name}</div>
                               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                                 <div style={{ display: "flex", alignItems: "center", gap: 8, background: "#F5EDE0", borderRadius: 100, padding: "5px 10px" }}>
                                   <motion.button whileTap={{ scale: 0.8 }} onClick={() => setQty(item.name, -1)}
@@ -405,7 +403,7 @@ export default function PickMeUp() {
             {/* Bill header */}
             <div style={{ background: "rgba(75,46,43,0.85)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", padding: "18px 24px", display: "flex", alignItems: "center", gap: 10 }}>
               <FiShoppingCart color="#E8C49A" size={16} />
-              <div style={{ color: "#fff", fontWeight: 800, fontSize: 15 }}>Your Order</div>
+              <div style={{ color: "#fff", fontWeight: 900, fontSize: 16, fontFamily: "'Merienda', serif", letterSpacing: "0.2px" }}>Your Order</div>
               {totalQty > 0 && <span style={{ marginLeft: "auto", background: "#E8C49A", color: "#4B2E2B", borderRadius: 100, width: 22, height: 22, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 800 }}>{totalQty}</span>}
             </div>
 
@@ -413,8 +411,8 @@ export default function PickMeUp() {
               {placed ? (
                 <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} style={{ textAlign: "center", padding: "24px 0" }}>
                   <motion.div animate={{ rotate: [0, 10, -10, 0], scale: [1, 1.2, 1] }} transition={{ duration: 0.6 }} style={{ fontSize: 48, marginBottom: 12 }}>🧃</motion.div>
-                  <div style={{ fontSize: 18, fontWeight: 800, color: "#4B2E2B", marginBottom: 8 }}>Order Placed! Yay!</div>
-                  <p style={{ fontSize: 13, color: "#9ca3af", lineHeight: 1.6 }}>We're squeezing it fresh just for you. See you soon, {customerName}!</p>
+                  <div style={{ fontSize: 20, fontWeight: 900, color: "#4B2E2B", marginBottom: 8, fontFamily: "'Merienda', serif" }}>Order Placed! Yay!</div>
+                  <p style={{ fontSize: 14, color: "#4B2E2B", lineHeight: 1.6, fontWeight: 600, fontFamily: "'Poppins', sans-serif" }}>We're squeezing it fresh just for you. See you soon, {customerName}!</p>
                   <motion.button whileHover={{ scale: 1.03 }}
                     style={{ marginTop: 20, background: "#4B2E2B", color: "#fff", border: "none", padding: "10px 24px", borderRadius: 100, fontSize: 13, fontWeight: 700, cursor: "pointer" }}
                     onClick={() => { setPlaced(false); setQuantities({}); setCustomerName(""); setCustomerPhone(""); setPickupTime(""); setOutletId(""); setOrderError(""); }}>
@@ -425,9 +423,9 @@ export default function PickMeUp() {
                 <>
                   <AnimatePresence>
                     {cartItems.length === 0 ? (
-                      <div style={{ textAlign: "center", padding: "32px 0", color: "#9ca3af" }}>
+                      <div style={{ textAlign: "center", padding: "32px 0", color: "#36454F" }}>
                         <div style={{ fontSize: 36, marginBottom: 8 }}>🛒</div>
-                        <div style={{ fontSize: 13, fontWeight: 500 }}>Add items to get started</div>
+                        <div style={{ fontSize: 14, fontWeight: 500 }}>Add items to get started</div>
                       </div>
                     ) : (
                       <div style={{ marginBottom: 20 }}>
@@ -435,8 +433,8 @@ export default function PickMeUp() {
                           <motion.div key={item.name} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, x: -20 }}
                             style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: "1px solid rgba(192,133,82,0.1)" }}>
                             <div>
-                              <div style={{ fontSize: 13, fontWeight: 600, color: "#2C1810" }}>{item.name}</div>
-                              <div style={{ fontSize: 11, color: "#9ca3af" }}>x{quantities[item.name]} · ₹{item.price} each</div>
+                              <div style={{ fontSize: 13, fontWeight: 700, color: "#1a0f0d", fontFamily: "'Poppins', sans-serif" }}>{item.name}</div>
+                              <div style={{ fontSize: 12, color: "#6b7280", fontWeight: 600, fontFamily: "'Poppins', sans-serif" }}>x{quantities[item.name]} · ₹{item.price} each</div>
                             </div>
                             <div style={{ fontSize: 14, fontWeight: 800, color: "#4B2E2B" }}>₹{item.price * quantities[item.name]}</div>
                           </motion.div>
@@ -456,7 +454,7 @@ export default function PickMeUp() {
                       { label: "Mobile Number", value: customerPhone, setter: setCustomerPhone, type: "tel", placeholder: "e.g. 9876543210" },
                     ].map(({ label, value, setter, type, placeholder }) => (
                       <div key={label} style={{ display: "flex", flexDirection: "column", gap: 5 }}>
-                        <label style={{ fontSize: 11, fontWeight: 700, color: "#8C5A3C", letterSpacing: 0.5, textTransform: "uppercase" }}>
+                        <label style={{ fontSize: 12, fontWeight: 800, color: "#4B2E2B", letterSpacing: 0.5, textTransform: "uppercase", fontFamily: "'Poppins', sans-serif" }}>
                           {label}
                         </label>
                         <input type={type} value={value} onChange={e => setter(e.target.value)} placeholder={placeholder}
@@ -466,7 +464,7 @@ export default function PickMeUp() {
 
                     {/* Pickup Time — 20-min interval dropdown */}
                     <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
-                      <label style={{ fontSize: 11, fontWeight: 700, color: "#8C5A3C", letterSpacing: 0.5, textTransform: "uppercase" }}>
+                      <label style={{ fontSize: 12, fontWeight: 800, color: "#4B2E2B", letterSpacing: 0.5, textTransform: "uppercase", fontFamily: "'Poppins', sans-serif" }}>
                         Pick Up Time
                       </label>
                       <select value={pickupTime} onChange={e => setPickupTime(e.target.value)}
@@ -519,7 +517,7 @@ export default function PickMeUp() {
                   </motion.button>
 
                   {(!outletId || cartItems.length === 0) && (
-                    <p style={{ fontSize: 11, color: "#9ca3af", textAlign: "center", marginTop: 8 }}>
+                    <p style={{ fontSize: 11, color: "#36454F", textAlign: "center", marginTop: 8 }}>
                       {!outletId ? "👆 Select an outlet first" : "👆 Add at least one item"}
                     </p>
                   )}
