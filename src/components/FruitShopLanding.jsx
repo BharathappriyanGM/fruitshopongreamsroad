@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, useInView, animate, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { FaInstagram, FaLinkedinIn, FaLeaf } from "react-icons/fa";
+import { FaInstagram, FaLinkedinIn, FaLeaf, FaEnvelope } from "react-icons/fa";
 import { FiShoppingCart, FiChevronDown, FiMapPin, FiMinus, FiPlus, FiZap, FiUsers } from "react-icons/fi";
 import "../App.css";
 
@@ -149,10 +149,10 @@ function ProductCard({ p, i, onAddToCart }) {
         filter: "drop-shadow(0 16px 48px rgba(75,46,43,0.13))",
       }}
     >
-      <div style={{ borderRadius: 28, overflow: "hidden", background: "#FFF8F0" }}>
+      <div style={{ borderRadius: 28, overflow: "hidden", background: "rgba(255,255,255,0.18)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", border: "1px solid rgba(255,255,255,0.35)" }}>
         {/* Gradient header */}
         <div style={{
-          background: p.bg, height: 220, position: "relative",
+          background: p.bg, height: 260, position: "relative",
           display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden"
         }}>
           <div style={{ position: "absolute", width: 180, height: 180, borderRadius: "50%", background: "rgba(255,255,255,0.1)", top: -40, right: -40 }} />
@@ -163,7 +163,7 @@ function ProductCard({ p, i, onAddToCart }) {
           </div>
           <motion.img src={p.img} alt={p.alt}
             style={{
-              width: 150, height: 150, objectFit: "cover", borderRadius: "50%",
+              width: 180, height: 180, objectFit: "cover", borderRadius: "50%",
               border: "5px solid rgba(255,255,255,0.5)",
               boxShadow: "0 16px 48px rgba(0,0,0,0.22)", position: "relative", zIndex: 2
             }}
@@ -171,12 +171,12 @@ function ProductCard({ p, i, onAddToCart }) {
         </div>
 
         {/* Card body */}
-        <div style={{ padding: "22px 20px 20px", background: "#FFF8F0" }}>
+        <div className="product-glass-body" style={{ padding: "26px 24px 24px" }}>
           <div style={{ width: 36, height: 4, borderRadius: 2, background: p.accent, marginBottom: 12 }} />
-          <div style={{ fontSize: 19, fontWeight: 800, color: "#2C1810", marginBottom: 6, lineHeight: 1.2 }}>
+          <div style={{ fontSize: 22, fontWeight: 800, color: "#2C1810", marginBottom: 8, lineHeight: 1.2 }}>
             {p.name}
           </div>
-          <p style={{ fontSize: 13, color: "#9ca3af", lineHeight: 1.65, marginBottom: 20, fontWeight: 400, minHeight: 44 }}>
+          <p style={{ fontSize: 15, color: "#43322b", lineHeight: 1.7, marginBottom: 20, fontWeight: 400, minHeight: 44 }}>
             {p.desc}
           </p>
         </div>
@@ -196,8 +196,8 @@ function ProductWheel({ products, onAddToCart }) {
     return () => window.removeEventListener("resize", update);
   }, []);
 
-  const RADIUS = isMobile ? 130 : 210;
-  const ITEM_SIZE = isMobile ? 64 : 80;
+  const RADIUS = isMobile ? 140 : 220;
+  const ITEM_SIZE = isMobile ? 70 : 85;
   const containerSize = RADIUS * 2 + ITEM_SIZE + 24;
   const center = containerSize / 2;
 
@@ -273,9 +273,9 @@ function ProductWheel({ products, onAddToCart }) {
                     style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
                 </div>
                 <div style={{
-                  position: "absolute", bottom: -18, left: "50%",
+                  position: "absolute", bottom: -22, left: "50%",
                   transform: "translateX(-50%)", whiteSpace: "nowrap",
-                  fontSize: isMobile ? 9 : 10, fontWeight: 700,
+                  fontSize: isMobile ? 10 : 12, fontWeight: 700,
                   color: isSelected ? "#4B2E2B" : "#9ca3af",
                   letterSpacing: "0.3px", transition: "color 0.3s",
                 }}>
@@ -302,7 +302,7 @@ function ProductWheel({ products, onAddToCart }) {
           style={{
             position: "absolute", top: "50%", left: "50%",
             x: "-50%", y: "-50%",
-            width: isMobile ? 90 : 140, height: isMobile ? 90 : 140,
+            width: isMobile ? 110 : 175, height: isMobile ? 110 : 175,
             background: "transparent", border: "none",
             cursor: spinning ? "default" : "pointer",
             display: "flex", alignItems: "center", justifyContent: "center", zIndex: 20,
@@ -315,7 +315,7 @@ function ProductWheel({ products, onAddToCart }) {
       {/* Card */}
       <div style={{
         flex: 1, width: isMobile ? "100%" : "auto",
-        maxWidth: 480, minWidth: isMobile ? "unset" : 360,
+        maxWidth: 540, minWidth: isMobile ? "unset" : 420,
       }}>
         <AnimatePresence mode="wait">
           <motion.div key={selectedIdx}
@@ -357,13 +357,17 @@ export default function FruitShopLanding({ cart, setCart }) {
       <motion.nav className="nav"
         initial={{ y: -80, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        style={{ background: "#4B2E2B", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+        style={{ 
+          background: "rgba(30, 15, 10, 0.44)", /* Glass transparent background */
+          backdropFilter: "blur(16px)",         /* Blur effect */
+          WebkitBackdropFilter: "blur(16px)",   /* Safari support */
+          borderBottom: "1px solid rgba(255,255,255,0.12)" 
+        }}>
 
         <a href="#" className="nav-logo">
-          <img src="/logo.png" alt="" style={{ height: 48, width: "auto", marginRight: 4 }} />
+          <img src="/logo.png" alt="" style={{ height: 50, width: "auto" }} />
           <div>
-            <div className="nav-logo-text" style={{ color: "#fff", fontFamily: "'Fraunces', serif" }}>Fruit Shop</div>
-            <div className="nav-logo-sub" style={{ color: "#E8C49A" }}>ON GREAMS ROAD</div>
+            <img src="/logo-name.png" alt="Fruit Shop on Greams Road" style={{ height: 55, width: "auto", marginTop: 3 }} />
           </div>
         </a>
 
@@ -390,7 +394,7 @@ export default function FruitShopLanding({ cart, setCart }) {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 8, scale: 0.96 }}
                   transition={{ duration: 0.18 }}
-                  style={{ position: "absolute", top: "calc(100% + 12px)", left: "50%", transform: "translateX(-50%)", background: "rgba(75,46,43,0.97)", backdropFilter: "blur(16px)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 16, padding: "8px", minWidth: 210, zIndex: 2000 }}>
+                  style={{ position: "absolute", top: "calc(100% + 12px)", left: "50%", transform: "translateX(-50%)", background: "rgba(30, 15, 10, 0.44)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", border: "1px solid rgba(255,255,255,0.2)", borderRadius: 16, padding: "8px", minWidth: 210, zIndex: 2000, boxShadow: "0 8px 32px rgba(0,0,0,0.25)" }}>
                   {[
                     { label: "🍹 Pick Me Up", path: "/pickup", sub: "Order fresh to your location" },
                     { label: "🏪 Stall Enquiry", path: "/stall", sub: "Book us for your event" },
@@ -399,9 +403,8 @@ export default function FruitShopLanding({ cart, setCart }) {
                     <motion.div key={label} whileHover={{ background: "rgba(255,255,255,0.08)", x: 3 }}
                       onClick={() => { navigate(path); setServicesOpen(false); }}
                       style={{ padding: "10px 14px", borderRadius: 10, cursor: "pointer" }}>
-                      <div style={{ color: "#fff", fontWeight: 600, fontSize: 14 }}>{label}</div>
-                      <div style={{ color: "rgba(255,255,255,0.45)", fontSize: 11, marginTop: 2 }}>{sub}</div>
-                    </motion.div>
+                      <div style={{ color: "#ffffff", fontWeight: 800, fontSize: 14, letterSpacing: "0.2px" }}>{label}</div>
+                      <div style={{ color: "rgba(255,255,255,0.75)", fontSize: 11, marginTop: 2, fontWeight: 500 }}>{sub}</div>                    </motion.div>
                   ))}
                 </motion.div>
               )}
@@ -456,15 +459,15 @@ export default function FruitShopLanding({ cart, setCart }) {
 
       {/* ── HERO ── */}
       <section className="hero" style={{ position: "relative", overflow: "hidden" }}>
-        <video autoPlay muted loop playsInline style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0.65, zIndex: 0 }}>
+        <video autoPlay muted loop playsInline style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0.9, zIndex: 0 }}>
           <source src="/videos/hero-bg.mp4" type="video/mp4" />
         </video>
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(75,46,43,0.85) 0%, rgba(140,90,60,0.5) 60%, rgba(192,133,82,0.3) 100%)", zIndex: 1 }} />
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(75,46,43,0.35) 0%, rgba(140,90,60,0.15) 60%, rgba(0,0,0,0.1) 100%)", zIndex: 1 }} />
 
         <motion.div className="hero-content" style={{ position: "relative", zIndex: 2 }}
           initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7, delay: 0.3, ease: "easeOut" }}>
-          <motion.div className="hero-badge" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} style={{ gap: 10 }}>
+          <motion.div className="hero-badge" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} style={{ gap: 10, background: "rgba(0,0,0,0.45)", border: "1px solid rgba(232,196,154,0.7)", color: "#F5D9A8" }}>
             <motion.span style={{ display: "inline-block", width: 8, height: 8, borderRadius: "50%", background: "#E8C49A", flexShrink: 0 }}
               animate={{ scale: [1, 1.5, 1], opacity: [1, 0.35, 1], boxShadow: ["0 0 0px #E8C49A", "0 0 8px 2px #E8C49A", "0 0 0px #E8C49A"] }}
               transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }} />
@@ -521,7 +524,7 @@ export default function FruitShopLanding({ cart, setCart }) {
           <p className="section-subtitle">From classic juices to signature specials — every sip made from fruits sourced daily.</p>
         </FadeUp>
 
-        <div style={{ position: "sticky", top: 72, zIndex: 10, width: "100%", background: "#FFF8F0", paddingTop: 16, paddingBottom: 16 }}>
+        <div style={{ position: "sticky", top: 72, zIndex: 10, width: "100%", background: "transparent", paddingTop: 16, paddingBottom: 16 }}>
           <ProductWheel products={products} onAddToCart={handleAddToCart} />
         </div>
       </section>
@@ -542,7 +545,7 @@ export default function FruitShopLanding({ cart, setCart }) {
           <motion.blockquote
             initial={{ opacity: 0, x: -32 }} whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }} transition={{ duration: 0.7, delay: 0.1 }}
-            style={{ borderLeft: "3px solid #C08552", paddingLeft: 20, margin: "20px 0 32px", fontStyle: "italic", fontSize: 18, fontWeight: 300, color: "#ffffff", lineHeight: 1.8, maxWidth: 700 }}>
+            style={{ borderLeft: "3px solid #C08552", paddingLeft: 20, margin: "20px 0 32px", fontStyle: "italic", fontSize: 18, fontWeight: 500, color: "#ffffff", lineHeight: 1.8, maxWidth: 700 }}>
             "When you have our juices there is no dying off of the taste buds with age. They tingle all the time, in anticipation!"
           </motion.blockquote>
 
@@ -576,7 +579,7 @@ export default function FruitShopLanding({ cart, setCart }) {
               initial={{ opacity: 0, y: 30, scale: 0.9 }} whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: true }} transition={{ delay: i * 0.1 + 0.2, type: "spring", stiffness: 180, damping: 18 }}
               whileHover={{ y: -6 }}
-              style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 20, padding: "28px 32px", minWidth: 155, flex: 1, position: "relative", overflow: "hidden" }}>
+              style={{ background: "rgba(255,255,255,0.08)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", border: "1px solid rgba(255,255,255,0.16)", borderRadius: 20, padding: "28px 32px", minWidth: 155, flex: 1, position: "relative", overflow: "hidden" }}>
               <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: "linear-gradient(90deg, #E8C49A, #C08552)", borderRadius: "20px 20px 0 0" }} />
               <div style={{ fontSize: 38, fontWeight: 900, color: "#E8C49A", lineHeight: 1, marginBottom: 6 }}>
                 {num === 1992 ? "1992" : <AnimatedCounter target={num} suffix={suffix} />}
@@ -612,7 +615,7 @@ export default function FruitShopLanding({ cart, setCart }) {
           <motion.h3
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }} transition={{ duration: 0.6 }}
-            style={{ fontSize: "clamp(22px, 3vw, 30px)", fontWeight: 700, color: "#E8C49A", margin: "0 0 16px", letterSpacing: "-0.3px" }}>
+            style={{ fontSize: "clamp(26px, 3.5vw, 36px)", fontWeight: 900, color: "#E8C49A", margin: "0 0 16px", letterSpacing: "-0.3px", textShadow: "0 2px 12px rgba(0,0,0,0.4)" }}>
             Haven't we come a long way?
           </motion.h3>
           <p className="about-text">
@@ -673,17 +676,18 @@ export default function FruitShopLanding({ cart, setCart }) {
                   whileHover={{ y: -4, boxShadow: "0 14px 36px rgba(75,46,43,0.13)" }}
                   style={{
                     display: "flex", flexDirection: "column", textDecoration: "none",
-                    background: "#fff", borderRadius: 12, border: `1.5px solid ${cc.color}22`,
+                    background: "rgba(255,255,255,0.6)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)",
+                    borderRadius: 12, border: `1.5px solid ${cc.color}22`,
                     overflow: "hidden", cursor: "pointer", boxShadow: "0 3px 12px rgba(75,46,43,0.07)",
                   }}>
                   <div style={{ width: "100%", background: cc.bg, display: "flex", justifyContent: "center", alignItems: "center", padding: "6px 0 5px", borderBottom: `1.5px solid ${cc.color}15`, flexShrink: 0 }}>
                     <img src="/logo.png" alt="Logo" style={{ width: 22, height: 22, borderRadius: "50%", objectFit: "cover", border: `2px solid ${cc.color}` }} />
                   </div>
                   <div style={{ padding: "7px 10px 8px", flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 3, textAlign: "center" }}>
-                    <span style={{ fontSize: 8, fontWeight: 700, textTransform: "uppercase", letterSpacing: "1.2px", color: cc.color, background: cc.bg, padding: "2px 7px", borderRadius: 100 }}>{o.city}</span>
-                    <div style={{ fontSize: 11, fontWeight: 800, color: "#2C1810", lineHeight: 1.2 }}>{o.name}</div>
-                    <p style={{ fontSize: 9, color: "#6b7280", lineHeight: 1.5, margin: "2px 0 0", fontWeight: 400 }}>{o.address}</p>
-                    <div style={{ marginTop: 3, fontSize: 9, fontWeight: 700, color: cc.color, display: "flex", alignItems: "center", gap: 3 }}>
+                    <span style={{ fontSize: 8, fontWeight: 700, textTransform: "uppercase", letterSpacing: "1.2px", color: cc.color, background: cc.bg, padding: "2px 7px", borderRadius: 100, fontFamily: "'Poppins', sans-serif" }}>{o.city}</span>
+                    <div style={{ fontSize: 11, fontWeight: 800, color: "#2C1810", lineHeight: 1.2, fontFamily: "'Merienda', serif" }}>{o.name}</div>
+                    <p style={{ fontSize: 9, color: "#6b7280", lineHeight: 1.5, margin: "2px 0 0", fontWeight: 400, fontFamily: "'Poppins', sans-serif" }}>{o.address}</p>
+                    <div style={{ marginTop: 3, fontSize: 9, fontWeight: 700, color: cc.color, display: "flex", alignItems: "center", gap: 3, fontFamily: "'Poppins', sans-serif" }}>
                       <FiMapPin size={8} /> Get Directions
                     </div>
                   </div>
@@ -706,17 +710,18 @@ export default function FruitShopLanding({ cart, setCart }) {
                     whileHover={{ y: -4, boxShadow: "0 14px 36px rgba(75,46,43,0.13)" }}
                     style={{
                       display: "flex", flexDirection: "column", textDecoration: "none",
-                      background: "#fff", borderRadius: 12, border: `1.5px solid ${cc.color}22`,
+                      background: "rgba(255,255,255,0.6)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)",
+                      borderRadius: 12, border: `1.5px solid ${cc.color}22`,
                       overflow: "hidden", cursor: "pointer", boxShadow: "0 3px 12px rgba(75,46,43,0.07)", flex: 1,
                     }}>
                     <div style={{ width: "100%", background: cc.bg, display: "flex", justifyContent: "center", alignItems: "center", padding: "6px 0 5px", borderBottom: `1.5px solid ${cc.color}15`, flexShrink: 0 }}>
                       <img src="/logo.png" alt="Logo" style={{ width: 22, height: 22, borderRadius: "50%", objectFit: "cover", border: `2px solid ${cc.color}` }} />
                     </div>
                     <div style={{ padding: "7px 8px 8px", flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 3, textAlign: "center" }}>
-                      <span style={{ fontSize: 8, fontWeight: 700, textTransform: "uppercase", letterSpacing: "1.2px", color: cc.color, background: cc.bg, padding: "2px 7px", borderRadius: 100 }}>{o.city}</span>
-                      <div style={{ fontSize: 11, fontWeight: 800, color: "#2C1810", lineHeight: 1.2 }}>{o.name}</div>
-                      <p style={{ fontSize: 9, color: "#6b7280", lineHeight: 1.5, margin: "2px 0 0", fontWeight: 400 }}>{o.address}</p>
-                      <div style={{ marginTop: 3, fontSize: 9, fontWeight: 700, color: cc.color, display: "flex", alignItems: "center", gap: 3 }}>
+                      <span style={{ fontSize: 8, fontWeight: 700, textTransform: "uppercase", letterSpacing: "1.2px", color: cc.color, background: cc.bg, padding: "2px 7px", borderRadius: 100, fontFamily: "'Poppins', sans-serif" }}>{o.city}</span>
+                      <div style={{ fontSize: 11, fontWeight: 800, color: "#2C1810", lineHeight: 1.2, fontFamily: "'Merienda', serif" }}>{o.name}</div>
+                      <p style={{ fontSize: 9, color: "#6b7280", lineHeight: 1.5, margin: "2px 0 0", fontWeight: 400, fontFamily: "'Poppins', sans-serif" }}>{o.address}</p>
+                      <div style={{ marginTop: 3, fontSize: 9, fontWeight: 700, color: cc.color, display: "flex", alignItems: "center", gap: 3, fontFamily: "'Poppins', sans-serif" }}>
                         <FiMapPin size={8} /> Get Directions
                       </div>
                     </div>
@@ -744,17 +749,18 @@ export default function FruitShopLanding({ cart, setCart }) {
                     whileHover={{ y: -4, boxShadow: "0 14px 36px rgba(75,46,43,0.13)" }}
                     style={{
                       display: "flex", flexDirection: "column", textDecoration: "none",
-                      background: "#fff", borderRadius: 12, border: `1.5px solid ${cc.color}22`,
+                      background: "rgba(255,255,255,0.6)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)",
+                      borderRadius: 12, border: `1.5px solid ${cc.color}22`,
                       overflow: "hidden", cursor: "pointer", boxShadow: "0 3px 12px rgba(75,46,43,0.07)", flex: 1,
                     }}>
                     <div style={{ width: "100%", background: cc.bg, display: "flex", justifyContent: "center", alignItems: "center", padding: "6px 0 5px", borderBottom: `1.5px solid ${cc.color}15`, flexShrink: 0 }}>
                       <img src="/logo.png" alt="Logo" style={{ width: 22, height: 22, borderRadius: "50%", objectFit: "cover", border: `2px solid ${cc.color}` }} />
                     </div>
                     <div style={{ padding: "7px 10px 8px", flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 3, textAlign: "center" }}>
-                      <span style={{ fontSize: 8, fontWeight: 700, textTransform: "uppercase", letterSpacing: "1.2px", color: cc.color, background: cc.bg, padding: "2px 7px", borderRadius: 100 }}>{o.city}</span>
-                      <div style={{ fontSize: 11, fontWeight: 800, color: "#2C1810", lineHeight: 1.2 }}>{o.name}</div>
-                      <p style={{ fontSize: 9, color: "#6b7280", lineHeight: 1.5, margin: "2px 0 0", fontWeight: 400 }}>{o.address}</p>
-                      <div style={{ marginTop: 3, fontSize: 9, fontWeight: 700, color: cc.color, display: "flex", alignItems: "center", gap: 3 }}>
+                      <span style={{ fontSize: 8, fontWeight: 700, textTransform: "uppercase", letterSpacing: "1.2px", color: cc.color, background: cc.bg, padding: "2px 7px", borderRadius: 100, fontFamily: "'Poppins', sans-serif" }}>{o.city}</span>
+                      <div style={{ fontSize: 11, fontWeight: 800, color: "#2C1810", lineHeight: 1.2, fontFamily: "'Merienda', serif" }}>{o.name}</div>
+                      <p style={{ fontSize: 9, color: "#6b7280", lineHeight: 1.5, margin: "2px 0 0", fontWeight: 400, fontFamily: "'Poppins', sans-serif" }}>{o.address}</p>
+                      <div style={{ marginTop: 3, fontSize: 9, fontWeight: 700, color: cc.color, display: "flex", alignItems: "center", gap: 3, fontFamily: "'Poppins', sans-serif" }}>
                         <FiMapPin size={8} /> Get Directions
                       </div>
                     </div>
@@ -776,17 +782,18 @@ export default function FruitShopLanding({ cart, setCart }) {
                     whileHover={{ y: -4, boxShadow: "0 14px 36px rgba(75,46,43,0.13)" }}
                     style={{
                       display: "flex", flexDirection: "column", textDecoration: "none",
-                      background: "#fff", borderRadius: 12, border: `1.5px solid ${cc.color}22`,
+                      background: "rgba(255,255,255,0.6)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)",
+                      borderRadius: 12, border: `1.5px solid ${cc.color}22`,
                       overflow: "hidden", cursor: "pointer", boxShadow: "0 3px 12px rgba(75,46,43,0.07)",
                     }}>
                     <div style={{ width: "100%", background: cc.bg, display: "flex", justifyContent: "center", alignItems: "center", padding: "6px 0 5px", borderBottom: `1.5px solid ${cc.color}15`, flexShrink: 0 }}>
                       <img src="/logo.png" alt="Logo" style={{ width: 22, height: 22, borderRadius: "50%", objectFit: "cover", border: `2px solid ${cc.color}` }} />
                     </div>
                     <div style={{ padding: "7px 12px 9px", flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 3, textAlign: "center" }}>
-                      <span style={{ fontSize: 8, fontWeight: 700, textTransform: "uppercase", letterSpacing: "1.2px", color: cc.color, background: cc.bg, padding: "2px 8px", borderRadius: 100 }}>{o.city}</span>
-                      <div style={{ fontSize: 11, fontWeight: 800, color: "#2C1810", lineHeight: 1.2 }}>{o.name}</div>
-                      <p style={{ fontSize: 9, color: "#6b7280", lineHeight: 1.55, margin: "2px 0 0", fontWeight: 400 }}>{o.address}</p>
-                      <div style={{ marginTop: 3, fontSize: 9, fontWeight: 700, color: cc.color, display: "flex", alignItems: "center", gap: 3 }}>
+                      <span style={{ fontSize: 8, fontWeight: 700, textTransform: "uppercase", letterSpacing: "1.2px", color: cc.color, background: cc.bg, padding: "2px 8px", borderRadius: 100, fontFamily: "'Poppins', sans-serif" }}>{o.city}</span>
+                      <div style={{ fontSize: 11, fontWeight: 800, color: "#2C1810", lineHeight: 1.2, fontFamily: "'Merienda', serif" }}>{o.name}</div>
+                      <p style={{ fontSize: 9, color: "#6b7280", lineHeight: 1.55, margin: "2px 0 0", fontWeight: 400, fontFamily: "'Poppins', sans-serif" }}>{o.address}</p>
+                      <div style={{ marginTop: 3, fontSize: 9, fontWeight: 700, color: cc.color, display: "flex", alignItems: "center", gap: 3, fontFamily: "'Poppins', sans-serif" }}>
                         <FiMapPin size={8} /> Get Directions
                       </div>
                     </div>
@@ -800,7 +807,7 @@ export default function FruitShopLanding({ cart, setCart }) {
 
       {/* ── FOOTER ── */}
       <footer>
-        <div className="footer-inner">
+        <div className="footer-inner" style={{ position: "relative", zIndex: 1 }}>
           <div className="footer-brand-name">Fruit Shop on Greams Road</div>
           <p className="footer-tagline">No artificial colors. No fake flavoring. No gas in our juices.<br />Serving Chennai with freshness since 1992.</p>
           <div style={{ display: "flex", flexDirection: "column", gap: 6, alignItems: "center" }}>
@@ -809,6 +816,7 @@ export default function FruitShopLanding({ cart, setCart }) {
           <div className="footer-social">
             <a className="footer-social-link" href="https://www.instagram.com/fruitshopongreamsroad.in" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><FaInstagram /></a>
             <a className="footer-social-link" href="https://www.linkedin.com/company/fruit-shop-on-greams-road" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><FaLinkedinIn /></a>
+            <a className="footer-social-link" href="mailto:fruitshopongreamsroadsocial@gmail.com" target="_blank" rel="noopener noreferrer" aria-label="Email"><FaEnvelope /></a>
           </div>
           <div className="footer-divider" />
           <span className="footer-copy">© {new Date().getFullYear()} Fruit Shop on Greams Road. All rights reserved.</span>

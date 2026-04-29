@@ -82,8 +82,8 @@ async function placeOrder(req, res) {
       </tr>
     `).join('');
 
-    // Send email to outlet manager
-    await sendEmail({
+    // Send email async (don't wait)
+    sendEmail({
       to: outlet.manager_email,
       templateKey: 'order_manager_notification',
       variables: {
@@ -96,13 +96,13 @@ async function placeOrder(req, res) {
         items_html: itemsHtml,
         total,
       },
-    });
+    }).catch(err => console.error('Failed to send order email:', err));
 
-    // Send SMS to customer (mocked — replace with MSG91/Twilio later)
-    await sendSms({
+    // Send SMS (mocked)
+    sendSms({
       to: customer_mobile,
       message: `Hi ${customer_name}, your order #${orderId} at Fruit Shop on Greams Road (${outlet.name}) has been placed! We'll prepare it fresh. See you soon!`,
-    });
+    }).catch(err => console.error('Failed to send SMS:', err));
 
     res.status(201).json({ success: true, order_id: orderId });
   } catch (err) {
