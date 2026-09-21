@@ -327,7 +327,7 @@ export default function AboutStory() {
               {/* Scene 1 & 2: Story Body text */}
               {scene.type === "body" && (
                 <motion.p
-                  className="nui-story-text"
+                  className="nui-story-text nui-story-italic"
                   initial={{ opacity: 0, scale: 0.92 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{
@@ -353,8 +353,8 @@ export default function AboutStory() {
                     delay: 0.08,
                   }}
                 >
-                  <p className="nui-story-intro">{scene.intro}</p>
-                  <p className="nui-story-callout">
+                  <h3 className="nui-story-intro">{scene.intro}</h3>
+                  <p className="nui-story-text nui-story-italic nui-story-callout">
                     {scene.callout.split("\n").map((line, i) => (
                       <span key={i}>
                         {line}

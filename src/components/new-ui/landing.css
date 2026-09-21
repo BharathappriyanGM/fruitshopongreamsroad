@@ -560,12 +560,22 @@
 }
 
 /* Story body & callout text (scaled down) */
-.nui-story-text {
-  font-family: var(--font-sans);
-  font-weight: 600;
-  font-size: clamp(14px, 1.22vw, 17.5px);
-  line-height: 1.6;
-  letter-spacing: 0.01em;
+.nui-story-text,
+.nui-story-text *,
+.nui-story-italic,
+.nui-story-italic *,
+.nui-story-callout,
+.nui-story-callout * {
+  font-family: 'DM Serif Text', var(--font-serif), Georgia, serif !important;
+  font-style: italic !important;
+  font-weight: 500 !important;
+}
+
+.nui-story-text,
+.nui-story-callout {
+  font-size: clamp(15.5px, 1.48vw, 20.5px);
+  line-height: 1.55;
+  letter-spacing: 0.005em;
   color: var(--c-white);
   text-align: center;
   text-shadow: 0 2px 14px rgba(0, 0, 0, 0.65), 0 1px 3px rgba(0, 0, 0, 0.4);
@@ -573,24 +583,15 @@
 }
 
 .nui-story-intro {
-  font-family: var(--font-sans);
-  font-weight: 600;
-  font-size: clamp(14px, 1.2vw, 17px);
-  line-height: 1.5;
+  font-family: 'DM Serif Text', var(--font-serif), Georgia, serif !important;
+  font-weight: 700;
+  font-size: clamp(22px, 2.25vw, 32px);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
   color: var(--c-white);
   text-align: center;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
   text-shadow: 0 2px 14px rgba(0, 0, 0, 0.65), 0 1px 3px rgba(0, 0, 0, 0.4);
-}
-
-.nui-story-callout {
-  font-family: var(--font-serif);
-  font-weight: 400;
-  font-size: clamp(22px, 2.1vw, 30px);
-  line-height: 1.45;
-  color: var(--c-white);
-  text-align: center;
-  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.65), 0 1px 4px rgba(0, 0, 0, 0.4);
 }
 
 /* Speech bubble: placed cleanly above gorilla hand in Scene 2 with comic handwriting font */
@@ -879,15 +880,13 @@ footer.nui-footer::before {
     font-size: 23px;
   }
 
-  .nui-story-text {
-    font-size: 15.5px;
+  .nui-story-text,
+  .nui-story-italic,
+  .nui-story-callout {
+    font-size: 16.5px;
   }
 
   .nui-story-intro {
-    font-size: 15.5px;
-  }
-
-  .nui-story-callout {
     font-size: 26px;
   }
 
@@ -971,22 +970,18 @@ footer.nui-footer::before {
     height: clamp(20px, 5.6vw, 27px);
   }
 
-  .nui-story-text {
-    font-size: clamp(12px, 3.4vw, 14.5px);
+  .nui-story-text,
+  .nui-story-italic,
+  .nui-story-callout {
+    font-size: clamp(12.5px, 3.6vw, 15px);
     line-height: 1.52;
     max-width: 350px;
     text-wrap: balance;
   }
 
   .nui-story-intro {
-    font-size: clamp(12px, 3.4vw, 14.5px);
+    font-size: clamp(17px, 5vw, 22px);
     margin-bottom: 8px;
-  }
-
-  .nui-story-callout {
-    font-size: clamp(17px, 4.8vw, 23px);
-    line-height: 1.4;
-    max-width: 320px;
   }
 
   .nui-speech-bubble {
