@@ -133,8 +133,6 @@ p, span, a, label, input, select, textarea, button,
   p, .hero-subtitle, .about-text { font-size: 15px; font-weight: 500; }
 }
 
-html { scroll-behavior: smooth; }
-
 body {
   font-family: var(--font-ui);
   /* background: var(--brown-dark); */
@@ -862,13 +860,13 @@ footer {
 .about > * { position: relative; z-index: 1; }
 
 /* ── Footer Background ──────────────────────────────────────── */
-footer {
+footer:not(.nui-footer) {
   background-image: url('/images/bg-footer.jpg') !important;
   background-size: cover !important;
   background-position: center top !important;
   position: relative;
 }
-footer::before {
+footer:not(.nui-footer)::before {
   content: '';
   position: absolute; inset: 0;
   background: rgba(0, 0, 0, 0.25); /* GLASS TRANSPARENT */
@@ -876,7 +874,7 @@ footer::before {
   -webkit-backdrop-filter: blur(8px);
   pointer-events: none; z-index: 0;
 }
-footer > * { position: relative; z-index: 1; }
+footer:not(.nui-footer) > * { position: relative; z-index: 1; }
 
 /* ── Glassmorphism: Outlet Cards ────────────────────────────── */
 .outlet-card, .locations motion\.a, .locations a {
