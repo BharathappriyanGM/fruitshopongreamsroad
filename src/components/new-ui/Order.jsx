@@ -31,19 +31,18 @@ export default function Order() {
     img.src = ORDER_MOBILE_IMAGE;
   }, [isMobile]);
 
-  // Desktop: Play video once when scrolled into view
+  // Desktop: Play video when scrolled into view, loops continuously
   useEffect(() => {
     if (isMobile || !videoRef.current) return;
     const video = videoRef.current;
-    let played = false;
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting && !played) {
-            played = true;
-            video.currentTime = 0;
+          if (entry.isIntersecting) {
             video.play().catch(() => {});
+          } else {
+            video.pause();
           }
         });
       },
@@ -63,10 +62,17 @@ export default function Order() {
             ref={videoRef}
             className="nui-order-video"
             muted
+            loop
             playsInline
             preload="auto"
+            disablePictureInPicture
+            controlsList="nodownload nofullscreen noremoteplayback"
             onLoadedData={() => setVideoLoaded(true)}
-            style={{ opacity: videoLoaded ? 1 : 0, transition: "opacity 0.8s ease" }}
+            style={{
+              opacity: videoLoaded ? 1 : 0,
+              transition: "opacity 0.8s ease",
+              pointerEvents: "none",
+            }}
           >
             <source src="/videos/order-online.mp4" type="video/mp4" />
           </video>

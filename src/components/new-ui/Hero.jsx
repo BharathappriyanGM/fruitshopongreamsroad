@@ -28,15 +28,27 @@ export default function Hero() {
   const isMobile = useIsMobile();
   const [slideIndex, setSlideIndex] = useState(0);
   const [textStage, setTextStage] = useState(0);
+  const [isMuted, setIsMuted] = useState(true);
 
-  // Desktop: autoplay video
+  // Desktop: autoplay video (muted initially per browser policy)
   useEffect(() => {
     if (!isMobile && videoRef.current) {
       videoRef.current.play().catch(() => {
-        // Autoplay policy fallback: poster image stays visible
+        // Autoplay policy fallback
       });
     }
   }, [isMobile]);
+
+  const toggleMute = () => {
+    if (!videoRef.current) return;
+    const nextMuted = !isMuted;
+    videoRef.current.muted = nextMuted;
+    if (!nextMuted) {
+      videoRef.current.volume = 1;
+      videoRef.current.play().catch(() => {});
+    }
+    setIsMuted(nextMuted);
+  };
 
   // Preload all 3 mobile curtain images
   useEffect(() => {
@@ -88,22 +100,67 @@ export default function Hero() {
 
   return (
     <section className="nui-hero" id="home" style={{ backgroundColor: "#180504" }}>
-      {/* Desktop: Background Video */}
+      {/* Desktop: Background Video & Sound Control */}
       {!isMobile && (
-        <video
-          ref={videoRef}
-          className="nui-hero-video"
-          autoPlay
-          muted
-          playsInline
-          webkit-playsinline="true"
-          preload="auto"
-          disablePictureInPicture
-          controlsList="nodownload nofullscreen noremoteplayback"
-          style={{ pointerEvents: "none", backgroundColor: "#180504" }}
-        >
-          <source src="/videos/landing-page.mp4" type="video/mp4" />
-        </video>
+        <>
+          <video
+            ref={videoRef}
+            className="nui-hero-video"
+            autoPlay
+            muted
+            loop
+            playsInline
+            webkit-playsinline="true"
+            preload="auto"
+            disablePictureInPicture
+            controlsList="nodownload nofullscreen noremoteplayback"
+            style={{ pointerEvents: "none", backgroundColor: "#180504" }}
+          >
+            <source src="/videos/landing-page.mp4" type="video/mp4" />
+          </video>
+
+          <button
+            type="button"
+            className={`nui-hero-sound-btn ${!isMuted ? "unmuted" : ""}`}
+            onClick={toggleMute}
+            aria-label={isMuted ? "Unmute video sound" : "Mute video sound"}
+            title={isMuted ? "Unmute sound" : "Mute sound"}
+          >
+            {isMuted ? (
+              <svg
+                className="nui-hero-sound-icon"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                <line x1="23" y1="9" x2="17" y2="15" />
+                <line x1="17" y1="9" x2="23" y2="15" />
+              </svg>
+            ) : (
+              <svg
+                className="nui-hero-sound-icon"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+              </svg>
+            )}
+          </button>
+        </>
       )}
 
       {/* Mobile: Direct animation with staged theater curtain text */}
