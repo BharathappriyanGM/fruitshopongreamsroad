@@ -344,6 +344,57 @@
   transform: rotate(45deg);
 }
 
+/* ── HERO SOUND TOGGLE BUTTON ───────────────────────── */
+.nui-hero-sound-btn {
+  position: absolute;
+  bottom: clamp(24px, 4vh, 36px);
+  right: clamp(24px, 4vw, 40px);
+  z-index: 25;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: 50%;
+  background: rgba(18, 18, 18, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+  cursor: pointer;
+  user-select: none;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+}
+
+.nui-hero-sound-btn:hover {
+  background: rgba(18, 18, 18, 0.85);
+  border-color: rgba(255, 255, 255, 0.45);
+  transform: translateY(-2px) scale(1.08);
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.45);
+}
+
+.nui-hero-sound-btn:active {
+  transform: translateY(0) scale(0.96);
+}
+
+.nui-hero-sound-btn.unmuted {
+  background: rgba(29, 110, 58, 0.85);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.nui-hero-sound-btn.unmuted:hover {
+  background: rgba(29, 110, 58, 0.95);
+  border-color: rgba(255, 255, 255, 0.55);
+}
+
+.nui-hero-sound-icon {
+  display: block;
+  flex-shrink: 0;
+}
+
 /* ── MOBILE HERO DIRECT ANIMATION ────────────────────── */
 .nui-hero-mobile-slideshow {
   position: absolute;
@@ -444,15 +495,14 @@
 .nui-about {
   position: relative;
   width: 100%;
-  height: 250vh;
+  height: 100vh;
+  height: 100dvh;
 }
 
 .nui-about-scene {
-  position: sticky;
-  top: 0;
+  position: relative;
   width: 100%;
-  height: 100vh;
-  height: 100dvh;
+  height: 100%;
   min-height: 650px;
   display: flex;
   align-items: flex-start;
@@ -500,15 +550,21 @@
 }
 
 /* Scenes 0, 1, 3 have comfortable space below the navbar */
-.nui-scene-content-0,
-.nui-scene-content-1,
-.nui-scene-content-3 {
+.nui-scene-content-0 {
   padding-top: 18.5vh;
+}
+
+.nui-scene-content-1 {
+  padding-top: 8.5vh;
+}
+
+.nui-scene-content-3 {
+  padding-top: 12vh;
 }
 
 /* Scene 2 has generous space below the navbar while clearing the banana artwork */
 .nui-scene-content-2 {
-  padding-top: 13.5vh;
+  padding-top: 10vh;
 }
 
 /* Scene 0 Staged Text */
@@ -521,19 +577,19 @@
 
 .nui-story-title-line {
   font-family: var(--font-serif);
-  font-weight: 700;
+  font-weight: 500;
   font-size: clamp(22px, 2.25vw, 32px);
   line-height: 1.25;
   color: #24130A;
   text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3), 0 2px 12px rgba(255, 230, 190, 0.22);
-  letter-spacing: -0.01em;
+  letter-spacing: 0.02em;
 }
 
 .nui-story-paren-line {
   font-family: var(--font-serif);
   font-style: italic;
   font-weight: 500;
-  font-size: clamp(20px, 2.1vw, 29px);
+  font-size: clamp(24px, 2.6vw, 36px);
   line-height: 1.35;
   color: #2A160D;
   text-shadow: 0 1px 2px rgba(255, 255, 255, 0.25), 0 2px 10px rgba(255, 230, 190, 0.2);
@@ -553,21 +609,21 @@
 }
 
 .nui-story-signature-svg {
-  width: clamp(185px, 18.5vw, 260px);
-  height: clamp(26px, 2.7vw, 38px);
+  width: clamp(140px, 14vw, 200px);
+  height: clamp(20px, 2vw, 28px);
   overflow: visible;
   display: block;
 }
 
-/* Story body & callout text (scaled down) */
+/* Story body & callout text — Manrope italic */
 .nui-story-text,
 .nui-story-text *,
 .nui-story-italic,
 .nui-story-italic *,
 .nui-story-callout,
 .nui-story-callout * {
-  font-family: 'DM Serif Text', var(--font-serif), Georgia, serif !important;
-  font-style: italic !important;
+  font-family: 'Manrope', var(--font-sans), sans-serif !important;
+  font-style: normal !important;
   font-weight: 500 !important;
 }
 
@@ -583,7 +639,7 @@
 }
 
 .nui-story-intro {
-  font-family: 'DM Serif Text', var(--font-serif), Georgia, serif !important;
+  font-family: 'Manrope', var(--font-sans), sans-serif !important;
   font-weight: 700;
   font-size: clamp(22px, 2.25vw, 32px);
   line-height: 1.25;
@@ -594,23 +650,7 @@
   text-shadow: 0 2px 14px rgba(0, 0, 0, 0.65), 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
-/* Speech bubble: placed cleanly above gorilla hand in Scene 2 with comic handwriting font */
-.nui-speech-bubble {
-  position: absolute;
-  left: 70%;
-  top: 30.5%;
-  right: auto;
-  font-family: 'Caveat', 'Patrick Hand', 'Merienda', cursive;
-  font-weight: 700;
-  font-size: clamp(30px, 2.9vw, 44px);
-  color: #ffffff;
-  transform-origin: center center;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6), 0 1px 3px rgba(0, 0, 0, 0.4);
-  z-index: 5;
-  pointer-events: none;
-  user-select: none;
-  white-space: nowrap;
-}
+
 
 /* Modern Right-Side Vertical Dotted-to-Line Navigation */
 .nui-about-indicator-nav {
@@ -674,6 +714,7 @@
   object-fit: cover;
   object-position: center top;
   z-index: 0;
+  pointer-events: none;
 }
 
 .nui-order-overlay {
@@ -890,12 +931,7 @@ footer.nui-footer::before {
     font-size: 26px;
   }
 
-  .nui-speech-bubble {
-    left: 70%;
-    top: 31%;
-    right: auto;
-    font-size: clamp(24px, 3.2vw, 32px);
-  }
+
 }
 
 /* ── Mobile (< 640px) ────────────────────────────────── */
@@ -984,12 +1020,7 @@ footer.nui-footer::before {
     margin-bottom: 8px;
   }
 
-  .nui-speech-bubble {
-    left: 71.5%;
-    top: 33.5%;
-    right: auto;
-    font-size: clamp(22px, 5.8vw, 28px);
-  }
+
 
   .nui-about-indicator-nav {
     right: 12px;

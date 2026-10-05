@@ -24,7 +24,7 @@ export default function Footer() {
           {/* Logo on the left */}
           <a href="#home" className="nui-footer-logo-link">
             <img
-              src="/images/landing/logo-official.png"
+              src="/images/landing/footer.png"
               alt="Fruit Shop on Greams Road"
               className="nui-footer-logo-img"
             />
