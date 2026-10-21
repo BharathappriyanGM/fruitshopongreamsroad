@@ -25,29 +25,80 @@ function useIsMobile(breakpoint = 640) {
 
 export default function Hero() {
   const videoRef = useRef(null);
+  const sectionRef = useRef(null);
+  const userWantsSoundRef = useRef(false);
   const isMobile = useIsMobile();
   const [slideIndex, setSlideIndex] = useState(0);
   const [textStage, setTextStage] = useState(0);
   const [isMuted, setIsMuted] = useState(true);
 
-  // Desktop: autoplay video (muted initially per browser policy)
+  // Desktop: Control playback & audio based on Hero section visibility
   useEffect(() => {
-    if (!isMobile && videoRef.current) {
-      videoRef.current.play().catch(() => {
-        // Autoplay policy fallback
-      });
-    }
+    if (isMobile) return;
+    const heroEl = sectionRef.current;
+    const video = videoRef.current;
+    if (!heroEl || !video) return;
+
+    // Autoplay initially (muted per browser autoplay policy)
+    video.play().catch(() => {});
+
+    const updateAudioAndPlayback = (isActive) => {
+      if (isActive) {
+        // Hero is active: resume play and restore sound if user enabled it
+        video.play().catch(() => {});
+        if (userWantsSoundRef.current) {
+          video.muted = false;
+          video.volume = 1;
+          setIsMuted(false);
+        } else {
+          video.muted = true;
+          setIsMuted(true);
+        }
+      } else {
+        // Scrolled down / Hero is not active: mute audio immediately
+        video.muted = true;
+        setIsMuted(true);
+      }
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const isActive = entry.isIntersecting && entry.intersectionRatio >= 0.25;
+          updateAudioAndPlayback(isActive);
+        });
+      },
+      { threshold: [0, 0.1, 0.25, 0.5, 0.75, 1.0] }
+    );
+
+    observer.observe(heroEl);
+
+    const handleScroll = () => {
+      const rect = heroEl.getBoundingClientRect();
+      const isActive =
+        rect.bottom > window.innerHeight * 0.25 &&
+        rect.top < window.innerHeight * 0.75;
+      updateAudioAndPlayback(isActive);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, [isMobile]);
 
   const toggleMute = () => {
     if (!videoRef.current) return;
     const nextMuted = !isMuted;
+    userWantsSoundRef.current = !nextMuted;
+    setIsMuted(nextMuted);
     videoRef.current.muted = nextMuted;
     if (!nextMuted) {
       videoRef.current.volume = 1;
       videoRef.current.play().catch(() => {});
     }
-    setIsMuted(nextMuted);
   };
 
   // Preload all 3 mobile curtain images
@@ -99,7 +150,7 @@ export default function Hero() {
   }, [isMobile]);
 
   return (
-    <section className="nui-hero" id="home" style={{ backgroundColor: "#180504" }}>
+    <section ref={sectionRef} className="nui-hero" id="home" style={{ backgroundColor: "#180504" }}>
       {/* Desktop: Background Video & Sound Control */}
       {!isMobile && (
         <>

@@ -22,6 +22,8 @@ function useIsMobile(breakpoint = 640) {
 export default function Order() {
   const [videoLoaded, setVideoLoaded] = useState(false);
   const videoRef = useRef(null);
+  const sectionRef = useRef(null);
+  const wasIntersectingRef = useRef(false);
   const isMobile = useIsMobile();
 
   // Preload mobile image
@@ -31,30 +33,44 @@ export default function Order() {
     img.src = ORDER_MOBILE_IMAGE;
   }, [isMobile]);
 
-  // Desktop: Play video when scrolled into view, loops continuously
+  // Desktop: Play video from start when arriving from other sections (hero, footer, about)
   useEffect(() => {
-    if (isMobile || !videoRef.current) return;
+    if (isMobile) return;
+    const section = sectionRef.current;
     const video = videoRef.current;
+    if (!section || !video) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            video.play().catch(() => {});
+            // Arriving from another section: always reset to start and play
+            if (!wasIntersectingRef.current) {
+              try {
+                video.currentTime = 0;
+              } catch (e) {}
+              video.play().catch(() => {});
+            }
+            wasIntersectingRef.current = true;
           } else {
+            // Leaving to another section: pause and rewind to start
+            wasIntersectingRef.current = false;
             video.pause();
+            try {
+              video.currentTime = 0;
+            } catch (e) {}
           }
         });
       },
-      { threshold: 0.2 }
+      { threshold: 0.25 }
     );
 
-    observer.observe(video);
+    observer.observe(section);
     return () => observer.disconnect();
   }, [isMobile]);
 
   return (
-    <section className="nui-order" id="order">
+    <section ref={sectionRef} className="nui-order" id="order">
       {/* Desktop: Background Video */}
       {!isMobile && (
         <>
@@ -67,7 +83,15 @@ export default function Order() {
             preload="auto"
             disablePictureInPicture
             controlsList="nodownload nofullscreen noremoteplayback"
-            onLoadedData={() => setVideoLoaded(true)}
+            onLoadedData={() => {
+              setVideoLoaded(true);
+              if (wasIntersectingRef.current && videoRef.current) {
+                try {
+                  videoRef.current.currentTime = 0;
+                } catch (e) {}
+                videoRef.current.play().catch(() => {});
+              }
+            }}
             style={{
               opacity: videoLoaded ? 1 : 0,
               transition: "opacity 0.8s ease",
